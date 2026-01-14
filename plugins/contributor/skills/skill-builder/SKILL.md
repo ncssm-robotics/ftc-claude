@@ -61,6 +61,85 @@ plugins/your-skill-name/
             └── convert.py
 ```
 
+## plugin.json Format (IMPORTANT)
+
+Every plugin needs a `plugin.json` file with the correct schema:
+
+```json
+{
+  "name": "your-skill-name",
+  "version": "1.0.0",
+  "description": "Brief description for marketplace listing",
+  "author": {
+    "name": "Your Name or Team",
+    "url": "https://github.com/your-username"
+  },
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "license": "MIT",
+  "keywords": ["ftc", "category", "relevant", "keywords"]
+}
+```
+
+### Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Must match folder name (kebab-case) |
+| `version` | string | Semantic version (e.g., "1.0.0") |
+| `description` | string | Brief description for listings |
+| `author` | object | **Must be an object**, not a string |
+
+### Author Object Format
+
+```json
+"author": {
+  "name": "NCSSM Robotics",
+  "url": "https://github.com/ncssm-robotics"
+}
+```
+
+**Common Mistake:** Using `"author": "Name"` (string) instead of an object will cause installation to fail.
+
+### Optional but Recommended Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `repository` | string | GitHub repo URL |
+| `license` | string | License type (MIT recommended) |
+| `keywords` | array | Search keywords (include "ftc") |
+| `homepage` | string | Documentation URL |
+
+### Invalid Fields (Do NOT Use)
+
+These fields are NOT supported and will cause errors:
+- ❌ `tags` - use `keywords` instead
+- ❌ `compatibility` - not a valid field
+- ❌ `author` as string - must be object
+
+## marketplace.json Entry
+
+When adding your plugin to the marketplace, add an entry to `.claude-plugin/marketplace.json`:
+
+```json
+{
+  "name": "your-skill-name",
+  "description": "Brief description",
+  "source": "./plugins/your-skill-name",
+  "skills": ["./skills/your-skill-name"]
+}
+```
+
+### Marketplace Fields
+
+| Field | Description |
+|-------|-------------|
+| `name` | Plugin name (must match folder) |
+| `description` | Brief description |
+| `source` | Path to plugin folder (use `./plugins/name`) |
+| `skills` | Array of skill paths within the plugin |
+
+**Common Mistake:** Using `"path"` instead of `"source"` will cause marketplace registration to fail.
+
 ## Writing the Description (CRITICAL)
 
 The `description` field determines when your skill activates. It must answer:
@@ -317,18 +396,29 @@ Brief introduction - what this helps FTC teams accomplish.
 
 Before submitting your skill:
 
+### plugin.json
 - [ ] `name` matches folder name (kebab-case)
+- [ ] `author` is an object with `name` field (NOT a string)
+- [ ] `keywords` array includes "ftc" (NOT `tags`)
+- [ ] No invalid fields (`tags`, `compatibility`)
+
+### marketplace.json
+- [ ] Entry added with `source` field (NOT `path`)
+- [ ] `skills` array lists skill directories
+
+### SKILL.md
+- [ ] `name` in frontmatter matches folder name
 - [ ] `description` includes WHAT and WHEN triggers
 - [ ] `description` includes FTC-specific keywords
-- [ ] SKILL.md is under ~500 lines
+- [ ] Under ~500 lines
 - [ ] Includes Quick Start section
 - [ ] Shows Good AND Bad examples
 - [ ] Anti-patterns marked with ❌
 - [ ] Code examples are tested and working
+
+### General
 - [ ] Scripts are executable (`chmod +x`)
 - [ ] No sensitive information (API keys, credentials)
-- [ ] Added to marketplace.json
-- [ ] plugin.json has correct metadata
 
 ## Testing Your Skill
 
@@ -352,6 +442,10 @@ Before submitting your skill:
 
 | Mistake | Fix |
 |---------|-----|
+| `author` as string | Use object: `{"name": "...", "url": "..."}` |
+| Using `tags` field | Rename to `keywords` |
+| Using `path` in marketplace | Rename to `source` |
+| Using `compatibility` | Remove - not a valid field |
 | Vague description | Add specific FTC keywords and trigger scenarios |
 | SKILL.md too long | Extract to API_REFERENCE.md, TROUBLESHOOTING.md |
 | No anti-patterns | Always show what NOT to do |
