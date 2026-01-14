@@ -1,12 +1,12 @@
 {
   "name": "limelight",
-  "description": "Limelight 3A vision system - AprilTags, MegaTag2 localization, color tracking, and auto-aim",
   "version": "1.0.0",
-  "author": "NCSSM Robotics",
-  "license": "MIT",
+  "description": "Limelight 3A vision system - AprilTags, MegaTag2 localization, color tracking, auto-aim",
+  "author": {
+    "name": "NCSSM Robotics",
+    "url": "https://github.com/ncssm-robotics"
+  },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
-  "tags": ["ftc", "hardware", "vision", "limelight", "apriltag", "localization"],
-  "compatibility": {
-    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
-  }
+  "license": "MIT",
+  "keywords": ["ftc", "hardware", "vision", "limelight", "apriltag", "localization"]
 }

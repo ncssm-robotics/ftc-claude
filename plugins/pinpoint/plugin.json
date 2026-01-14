@@ -1,12 +1,12 @@
 {
   "name": "pinpoint",
-  "description": "GoBilda Pinpoint odometry computer - setup, pod offsets, tuning, and LED status codes",
   "version": "1.0.0",
-  "author": "NCSSM Robotics",
-  "license": "MIT",
+  "description": "GoBilda Pinpoint odometry computer - setup, pod offsets, tuning, and LED status codes",
+  "author": {
+    "name": "NCSSM Robotics",
+    "url": "https://github.com/ncssm-robotics"
+  },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
-  "tags": ["ftc", "hardware", "odometry", "gobilda", "pinpoint", "localization"],
-  "compatibility": {
-    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
-  }
+  "license": "MIT",
+  "keywords": ["ftc", "hardware", "odometry", "gobilda", "pinpoint", "localization"]
 }

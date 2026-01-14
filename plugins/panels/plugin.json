@@ -1,12 +1,12 @@
 {
   "name": "panels",
-  "description": "Panels dashboard - telemetry graphs, live configuration, and robot debugging",
   "version": "1.0.0",
-  "author": "NCSSM Robotics",
-  "license": "MIT",
+  "description": "Panels dashboard - telemetry graphs, live configuration, robot debugging",
+  "author": {
+    "name": "NCSSM Robotics",
+    "url": "https://github.com/ncssm-robotics"
+  },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
-  "tags": ["ftc", "tools", "dashboard", "telemetry", "debugging", "panels"],
-  "compatibility": {
-    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
-  }
+  "license": "MIT",
+  "keywords": ["ftc", "tools", "dashboard", "telemetry", "debugging", "panels"]
 }
