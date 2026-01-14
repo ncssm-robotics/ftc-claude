@@ -1,0 +1,209 @@
+/**
+ * Field coordinate conversion utilities for DECODE 2025-2026.
+ *
+ * Copy this file to your project's util package and use these functions
+ * for converting between coordinate systems.
+ */
+
+package edu.ncssm.aperture.util
+
+import com.pedropathing.geometry.Pose
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D
+
+/**
+ * Coordinate conversion utilities for DECODE field.
+ *
+ * Coordinate Systems:
+ * - FTC: Origin at field center, meters, heading in degrees
+ * - Pedro: Origin at field corner, inches, heading in radians
+ * - Tile: 6x6 grid, each tile 24 inches
+ */
+object FieldCoordinates {
+
+    // Field dimensions
+    const val FIELD_SIZE_INCHES = 144.0
+    const val FIELD_CENTER_INCHES = 72.0
+    const val TILE_SIZE_INCHES = 24.0
+    const val TILES_PER_SIDE = 6
+
+    // Unit conversions
+    const val INCHES_PER_METER = 39.3701
+    const val METERS_PER_INCH = 0.0254
+
+    // ============================================================
+    // FTC <-> Pedro Conversions
+    // ============================================================
+
+    /**
+     * Convert FTC coordinates (meters, degrees) to Pedro (inches, radians).
+     */
+    fun ftcToPedro(ftcX: Double, ftcY: Double, headingDegrees: Double): Pose {
+        val pedroX = (ftcX * INCHES_PER_METER) + FIELD_CENTER_INCHES
+        val pedroY = (ftcY * INCHES_PER_METER) + FIELD_CENTER_INCHES
+        val headingRadians = Math.toRadians(headingDegrees)
+
+        return Pose(pedroX, pedroY, headingRadians)
+    }
+
+    /**
+     * Convert Limelight Pose3D to Pedro Pose.
+     */
+    fun limelightToPedro(botpose: Pose3D): Pose {
+        return ftcToPedro(
+            botpose.position.x,
+            botpose.position.y,
+            botpose.orientation.yaw
+        )
+    }
+
+    /**
+     * Convert Pedro coordinates (inches, radians) to FTC (meters, degrees).
+     */
+    fun pedroToFTC(pose: Pose): Triple<Double, Double, Double> {
+        val ftcX = (pose.x - FIELD_CENTER_INCHES) * METERS_PER_INCH
+        val ftcY = (pose.y - FIELD_CENTER_INCHES) * METERS_PER_INCH
+        val headingDegrees = Math.toDegrees(pose.heading)
+
+        return Triple(ftcX, ftcY, headingDegrees)
+    }
+
+    // ============================================================
+    // Tile <-> Pedro Conversions
+    // ============================================================
+
+    /**
+     * Convert tile coordinates to Pedro inches.
+     * Tile (0,0) is bottom-left corner of field.
+     */
+    fun tileToPedro(tileX: Double, tileY: Double): Pair<Double, Double> {
+        return Pair(tileX * TILE_SIZE_INCHES, tileY * TILE_SIZE_INCHES)
+    }
+
+    /**
+     * Get Pedro coordinates for center of a tile.
+     */
+    fun tileCenterToPedro(tileX: Int, tileY: Int): Pair<Double, Double> {
+        val centerX = (tileX * TILE_SIZE_INCHES) + (TILE_SIZE_INCHES / 2)
+        val centerY = (tileY * TILE_SIZE_INCHES) + (TILE_SIZE_INCHES / 2)
+        return Pair(centerX, centerY)
+    }
+
+    /**
+     * Convert Pedro coordinates to tile coordinates.
+     */
+    fun pedroToTile(pedroX: Double, pedroY: Double): Pair<Double, Double> {
+        return Pair(pedroX / TILE_SIZE_INCHES, pedroY / TILE_SIZE_INCHES)
+    }
+
+    // ============================================================
+    // Alliance Mirroring
+    // ============================================================
+
+    /**
+     * Mirror a red alliance pose for blue alliance.
+     * X is mirrored around center, heading is flipped.
+     */
+    fun mirrorForBlue(redPose: Pose): Pose {
+        val blueX = FIELD_SIZE_INCHES - redPose.x
+        val blueY = redPose.y  // Y unchanged
+        val blueHeading = normalizeRadians(Math.PI - redPose.heading)
+
+        return Pose(blueX, blueY, blueHeading)
+    }
+
+    /**
+     * Mirror a point for blue alliance (no heading).
+     */
+    fun mirrorXForBlue(redX: Double): Double {
+        return FIELD_SIZE_INCHES - redX
+    }
+
+    // ============================================================
+    // Heading Utilities
+    // ============================================================
+
+    /**
+     * Normalize angle to [-PI, PI] radians.
+     */
+    fun normalizeRadians(angle: Double): Double {
+        var normalized = angle % (2 * Math.PI)
+        if (normalized > Math.PI) normalized -= 2 * Math.PI
+        if (normalized < -Math.PI) normalized += 2 * Math.PI
+        return normalized
+    }
+
+    /**
+     * Normalize angle to [-180, 180] degrees.
+     */
+    fun normalizeDegrees(angle: Double): Double {
+        var normalized = angle % 360.0
+        if (normalized > 180.0) normalized -= 360.0
+        if (normalized < -180.0) normalized += 360.0
+        return normalized
+    }
+
+    /**
+     * Convert heading to human-readable direction.
+     */
+    fun headingToDirection(radians: Double): String {
+        val degrees = Math.toDegrees(normalizeRadians(radians))
+        return when {
+            degrees in -22.5..22.5 -> "Right (+X)"
+            degrees in 22.5..67.5 -> "Right-Back"
+            degrees in 67.5..112.5 -> "Back (+Y)"
+            degrees in 112.5..157.5 -> "Left-Back"
+            degrees > 157.5 || degrees < -157.5 -> "Left (-X)"
+            degrees in -157.5..-112.5 -> "Left-Audience"
+            degrees in -112.5..-67.5 -> "Audience (-Y)"
+            degrees in -67.5..-22.5 -> "Right-Audience"
+            else -> "Unknown"
+        }
+    }
+
+    // ============================================================
+    // Common Field Positions
+    // ============================================================
+
+    object Positions {
+        // Starting positions (Red Alliance)
+        val RED_START_LEFT = Pose(7.0, 6.75, 0.0)
+        val RED_START_RIGHT = Pose(7.0, 137.25, 0.0)
+
+        // Starting positions (Blue Alliance)
+        val BLUE_START_LEFT = Pose(137.0, 137.25, Math.PI)
+        val BLUE_START_RIGHT = Pose(137.0, 6.75, Math.PI)
+
+        // Field center
+        val FIELD_CENTER = Pose(72.0, 72.0, 0.0)
+
+        // AprilTag positions
+        val TAG_11 = Pair(0.0, 72.0)      // Left wall
+        val TAG_12 = Pair(72.0, 144.0)    // Back wall
+        val TAG_13 = Pair(144.0, 72.0)    // Right wall
+        val TAG_14 = Pair(72.0, 0.0)      // Audience wall
+    }
+
+    // ============================================================
+    // Debug / Telemetry Helpers
+    // ============================================================
+
+    /**
+     * Format pose for telemetry display.
+     */
+    fun formatPose(pose: Pose): String {
+        val degrees = Math.toDegrees(pose.heading)
+        return String.format("(%.1f, %.1f) @ %.1f°", pose.x, pose.y, degrees)
+    }
+
+    /**
+     * Format pose with tile coordinates.
+     */
+    fun formatPoseWithTile(pose: Pose): String {
+        val (tileX, tileY) = pedroToTile(pose.x, pose.y)
+        val degrees = Math.toDegrees(pose.heading)
+        return String.format(
+            "(%.1f, %.1f) [Tile %.1f, %.1f] @ %.1f°",
+            pose.x, pose.y, tileX, tileY, degrees
+        )
+    }
+}

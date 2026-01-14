@@ -1,0 +1,195 @@
+/**
+ * Coordinate conversion utilities for Limelight 3A and Pedro Pathing.
+ *
+ * Copy relevant functions into your codebase as needed.
+ */
+
+package edu.ncssm.aperture.util
+
+import com.pedropathing.geometry.Pose
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D
+
+/**
+ * Coordinate conversion utilities between different FTC coordinate systems.
+ *
+ * Coordinate Systems:
+ * - FTC Standard: Origin at field center, X right, Y forward (away from driver), meters
+ * - Pedro Pathing: Origin at corner, X right, Y up (away from driver), inches
+ * - Limelight tx/ty: Degrees from camera center, tx+ left, ty+ up
+ */
+object CoordinateConversion {
+
+    // Field dimensions
+    const val FIELD_SIZE_INCHES = 144.0
+    const val FIELD_CENTER_INCHES = FIELD_SIZE_INCHES / 2  // 72 inches
+
+    // Unit conversions
+    const val INCHES_PER_METER = 39.3701
+    const val METERS_PER_INCH = 0.0254
+
+    // ============================================================
+    // Pose Conversions
+    // ============================================================
+
+    /**
+     * Convert Limelight botpose (FTC coordinates) to Pedro Pathing pose.
+     *
+     * FTC: Origin at field center, meters, heading in degrees
+     * Pedro: Origin at field corner, inches, heading in radians
+     *
+     * @param botpose Pose3D from Limelight MegaTag2
+     * @return Pedro Pathing Pose
+     */
+    fun botposeToPedro(botpose: Pose3D): Pose {
+        // Convert meters to inches
+        val xInches = botpose.position.x * INCHES_PER_METER
+        val yInches = botpose.position.y * INCHES_PER_METER
+
+        // Shift origin from field center to corner
+        val pedroX = xInches + FIELD_CENTER_INCHES
+        val pedroY = yInches + FIELD_CENTER_INCHES
+
+        // Convert heading from degrees to radians
+        val headingRadians = Math.toRadians(botpose.orientation.yaw)
+
+        return Pose(pedroX, pedroY, headingRadians)
+    }
+
+    /**
+     * Convert Pedro Pathing pose to FTC field coordinates.
+     *
+     * @param pose Pedro Pathing Pose (inches, radians)
+     * @return DoubleArray [x, y, z, roll, pitch, yaw] in meters and degrees
+     */
+    fun pedroToFTCArray(pose: Pose): DoubleArray {
+        // Shift origin from corner to field center
+        val ftcXMeters = (pose.x - FIELD_CENTER_INCHES) * METERS_PER_INCH
+        val ftcYMeters = (pose.y - FIELD_CENTER_INCHES) * METERS_PER_INCH
+
+        // Convert heading from radians to degrees
+        val headingDegrees = Math.toDegrees(pose.heading)
+
+        return doubleArrayOf(ftcXMeters, ftcYMeters, 0.0, 0.0, 0.0, headingDegrees)
+    }
+
+    /**
+     * Convert FTC field coordinates (meters) to Pedro (inches).
+     *
+     * @param ftcX X position in meters (from field center)
+     * @param ftcY Y position in meters (from field center)
+     * @param headingDegrees Heading in degrees
+     * @return Pedro Pathing Pose
+     */
+    fun ftcToPedro(ftcX: Double, ftcY: Double, headingDegrees: Double): Pose {
+        val pedroX = (ftcX * INCHES_PER_METER) + FIELD_CENTER_INCHES
+        val pedroY = (ftcY * INCHES_PER_METER) + FIELD_CENTER_INCHES
+        val headingRadians = Math.toRadians(headingDegrees)
+
+        return Pose(pedroX, pedroY, headingRadians)
+    }
+
+    // ============================================================
+    // Point Conversions
+    // ============================================================
+
+    /**
+     * Convert a point from FTC coordinates to Pedro coordinates.
+     *
+     * @param ftcX X in meters from field center
+     * @param ftcY Y in meters from field center
+     * @return Pair of (pedroX, pedroY) in inches
+     */
+    fun pointFTCToPedro(ftcX: Double, ftcY: Double): Pair<Double, Double> {
+        val pedroX = (ftcX * INCHES_PER_METER) + FIELD_CENTER_INCHES
+        val pedroY = (ftcY * INCHES_PER_METER) + FIELD_CENTER_INCHES
+        return Pair(pedroX, pedroY)
+    }
+
+    /**
+     * Convert a point from Pedro coordinates to FTC coordinates.
+     *
+     * @param pedroX X in inches from field corner
+     * @param pedroY Y in inches from field corner
+     * @return Pair of (ftcX, ftcY) in meters
+     */
+    fun pointPedroToFTC(pedroX: Double, pedroY: Double): Pair<Double, Double> {
+        val ftcX = (pedroX - FIELD_CENTER_INCHES) * METERS_PER_INCH
+        val ftcY = (pedroY - FIELD_CENTER_INCHES) * METERS_PER_INCH
+        return Pair(ftcX, ftcY)
+    }
+
+    // ============================================================
+    // Turret / Aim Conversions
+    // ============================================================
+
+    /**
+     * Convert Limelight tx (degrees) to turret encoder ticks.
+     *
+     * @param tx Horizontal offset in degrees (positive = target left of center)
+     * @param ticksPerDegree Calibrated encoder ticks per degree of turret rotation
+     * @return Target turret position in encoder ticks
+     */
+    fun txToTurretTicks(tx: Double, ticksPerDegree: Double = 10.0): Int {
+        // tx positive = target to the left = rotate turret left (positive ticks)
+        return (tx * ticksPerDegree).toInt()
+    }
+
+    /**
+     * Calculate distance to target using ty and known target height.
+     *
+     * Uses the formula: distance = (targetHeight - cameraHeight) / tan(cameraAngle + ty)
+     *
+     * @param ty Vertical offset in degrees
+     * @param cameraHeightInches Height of camera lens from ground
+     * @param cameraAngleDegrees Mounting angle of camera (positive = tilted up)
+     * @param targetHeightInches Height of target center from ground
+     * @return Distance to target in inches
+     */
+    fun calculateDistanceFromTy(
+        ty: Double,
+        cameraHeightInches: Double,
+        cameraAngleDegrees: Double,
+        targetHeightInches: Double
+    ): Double {
+        val angleRadians = Math.toRadians(cameraAngleDegrees + ty)
+        return (targetHeightInches - cameraHeightInches) / Math.tan(angleRadians)
+    }
+
+    // ============================================================
+    // Angle Utilities
+    // ============================================================
+
+    /**
+     * Normalize angle to [-180, 180] degrees.
+     */
+    fun normalizeAngleDegrees(angle: Double): Double {
+        var normalized = angle % 360.0
+        if (normalized > 180.0) normalized -= 360.0
+        if (normalized < -180.0) normalized += 360.0
+        return normalized
+    }
+
+    /**
+     * Normalize angle to [-PI, PI] radians.
+     */
+    fun normalizeAngleRadians(angle: Double): Double {
+        var normalized = angle % (2 * Math.PI)
+        if (normalized > Math.PI) normalized -= 2 * Math.PI
+        if (normalized < -Math.PI) normalized += 2 * Math.PI
+        return normalized
+    }
+}
+
+// ============================================================
+// Extension Functions (optional convenience)
+// ============================================================
+
+/**
+ * Convert this Pose3D (from Limelight) to Pedro Pathing Pose.
+ */
+fun Pose3D.toPedroPose(): Pose = CoordinateConversion.botposeToPedro(this)
+
+/**
+ * Convert this Pedro Pose to FTC coordinates array.
+ */
+fun Pose.toFTCArray(): DoubleArray = CoordinateConversion.pedroToFTCArray(this)
