@@ -58,6 +58,14 @@
       "path": "plugins/panels",
       "category": "tools",
       "tags": ["ftc", "tools", "dashboard", "telemetry", "debugging"]
+    },
+    {
+      "name": "contributor",
+      "description": "Contributor tools - skill-builder skill, /create-skill and /validate-skill commands for adding new plugins",
+      "version": "1.0.0",
+      "path": "plugins/contributor",
+      "category": "tools",
+      "tags": ["ftc", "contributor", "meta", "skill-builder", "development"]
     }
   ]
 }

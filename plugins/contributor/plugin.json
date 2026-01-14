@@ -1,0 +1,12 @@
+{
+  "name": "contributor",
+  "description": "Tools for creating and contributing new FTC skills to the marketplace",
+  "version": "1.0.0",
+  "author": "NCSSM Robotics",
+  "license": "MIT",
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "tags": ["ftc", "contributor", "skill-builder", "meta", "tools"],
+  "compatibility": {
+    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
+  }
+}

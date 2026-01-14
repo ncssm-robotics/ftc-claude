@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGINS_DIR="$SCRIPT_DIR/plugins"
 
 # Available skills
-AVAILABLE_SKILLS=("decode" "pedro-pathing" "pinpoint" "limelight" "nextftc" "panels")
+AVAILABLE_SKILLS=("decode" "pedro-pathing" "pinpoint" "limelight" "nextftc" "panels" "contributor")
 
 # Agent skill directories
 declare -A AGENT_DIRS=(
@@ -63,6 +63,7 @@ SKILLS:
     limelight           Limelight 3A vision system
     nextftc             NextFTC command-based framework
     panels              Panels debugging dashboard
+    contributor         Skill-builder tools for contributors
 
 EXAMPLES:
     ./install.sh pedro-pathing pinpoint     # Install two skills to detected agent

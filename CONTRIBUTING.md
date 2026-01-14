@@ -4,32 +4,82 @@ Thank you for your interest in contributing to the FTC Claude Skills Marketplace
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-- [Creating a New Skill](#creating-a-new-skill)
+- [AI-Assisted Contribution (Recommended)](#ai-assisted-contribution-recommended)
+- [Manual Contribution](#manual-contribution)
 - [Skill Structure](#skill-structure)
 - [Writing Good Skills](#writing-good-skills)
 - [Testing Your Skill](#testing-your-skill)
 - [Submitting a Pull Request](#submitting-a-pull-request)
 - [Code of Conduct](#code-of-conduct)
 
-## Getting Started
+## AI-Assisted Contribution (Recommended)
+
+The easiest way to contribute is to use the **contributor** plugin, which includes a skill-builder skill and commands that guide Claude through creating properly structured skills.
+
+### Quick Start
+
+```bash
+# 1. Fork and clone
+git clone https://github.com/YOUR-USERNAME/ftc-claude.git
+cd ftc-claude
+
+# 2. Install contributor tools
+/plugin install contributor@ncssm-robotics/ftc-claude
+
+# 3. Create a new skill
+/create-skill roadrunner library
+
+# 4. Claude guides you through filling in the content
+
+# 5. Validate before submitting
+/validate-skill roadrunner
+
+# 6. Submit PR
+```
+
+### Natural Language Approach
+
+You can also just ask Claude naturally:
+
+```
+"Help me create a new FTC skill for RoadRunner path planning"
+"I want to add a skill for the REV Control Hub"
+"Create a skill documenting EasyOpenCV pipelines"
+```
+
+The **skill-builder** skill activates automatically and guides you through:
+- Proper directory structure
+- Writing effective descriptions with trigger keywords
+- Creating good vs bad code examples
+- Adding anti-patterns
+- Validation checks
+
+### What the Skill-Builder Teaches
+
+- **WHAT + WHEN descriptions** - Critical for skill activation
+- **Progressive disclosure** - Keep SKILL.md under 500 lines
+- **FTC-specific keywords** - Trigger words for robotics context
+- **Example patterns** - Good/bad code comparisons
+- **Anti-patterns** - What NOT to do (marked with ❌)
+
+---
+
+## Manual Contribution
+
+If you prefer to create skills manually without AI assistance:
 
 ### Prerequisites
 
 - Git installed on your computer
 - A GitHub account
 - Familiarity with the FTC library/hardware/tool you're documenting
-- A coding agent to test with (Claude Code, Codex CLI, etc.)
 
 ### Fork and Clone
 
 ```bash
-# Fork the repository on GitHub, then clone your fork
 git clone https://github.com/YOUR-USERNAME/ftc-claude.git
 cd ftc-claude
 ```
-
-## Creating a New Skill
 
 ### Step 1: Copy the Template
 

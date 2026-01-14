@@ -6,6 +6,8 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 
 ## Available Skills
 
+### FTC Skills
+
 | Skill | Category | Description |
 |-------|----------|-------------|
 | **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
@@ -14,6 +16,12 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 | **limelight** | Hardware | Limelight 3A vision - AprilTags, MegaTag2, color tracking |
 | **nextftc** | Framework | NextFTC command-based framework - commands, subsystems, bindings |
 | **panels** | Tools | Panels dashboard - telemetry graphs, live configuration |
+
+### Contributor Tools
+
+| Skill | Description |
+|-------|-------------|
+| **contributor** | Skill-builder tools for creating new FTC skills - includes `/create-skill` and `/validate-skill` commands |
 
 ## Installation
 
@@ -92,7 +100,10 @@ ftc-claude/
 │   ├── pinpoint/
 │   ├── limelight/
 │   ├── nextftc/
-│   └── panels/
+│   ├── panels/
+│   └── contributor/         # Skill-builder tools
+│       ├── skills/skill-builder/
+│       └── commands/
 ├── template/                 # Template for new skills
 ├── install.sh                # Cross-platform installer
 ├── CONTRIBUTING.md           # Contribution guide
@@ -103,7 +114,24 @@ ftc-claude/
 
 We welcome contributions from the FTC community! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-### Quick Start for Contributors
+### AI-Assisted Contribution (Recommended)
+
+The easiest way to contribute is to let Claude help you build the skill:
+
+```bash
+# 1. Install the contributor tools
+/plugin install contributor@ncssm-robotics/ftc-claude
+
+# 2. Create a new skill (Claude guides you through it)
+/create-skill roadrunner library
+
+# 3. Validate before submitting
+/validate-skill roadrunner
+```
+
+Or just ask Claude: *"Help me create a new FTC skill for RoadRunner"* - the skill-builder skill activates automatically and guides you through the process.
+
+### Manual Contribution
 
 1. Fork this repository
 2. Copy `template/` to `plugins/your-skill-name/`
