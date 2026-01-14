@@ -100,17 +100,19 @@ Edit `plugins/your-skill-name/plugin.json`:
 ```json
 {
   "name": "your-skill-name",
-  "description": "Brief description (shown in marketplace listings)",
   "version": "1.0.0",
-  "author": "Your Name or Team Number",
-  "license": "MIT",
+  "description": "Brief description (shown in marketplace listings)",
+  "author": {
+    "name": "Your Name or Team Number",
+    "url": "https://github.com/your-username"
+  },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
-  "tags": ["ftc", "relevant", "keywords"],
-  "compatibility": {
-    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
-  }
+  "license": "MIT",
+  "keywords": ["ftc", "relevant", "keywords"]
 }
 ```
+
+**Important:** The `author` field must be an object with `name` and `url`, not a string. Use `keywords` (not `tags`).
 
 ### Step 4: Write SKILL.md
 
@@ -141,12 +143,12 @@ Edit `.claude-plugin/marketplace.json` and add your plugin to the `plugins` arra
 {
   "name": "your-skill-name",
   "description": "Your skill description",
-  "version": "1.0.0",
-  "path": "plugins/your-skill-name",
-  "category": "hardware",
-  "tags": ["ftc", "your", "tags"]
+  "source": "./plugins/your-skill-name",
+  "skills": ["./skills/your-skill-name"]
 }
 ```
+
+**Important:** Use `source` (not `path`) for the plugin directory path.
 
 ## Skill Structure
 
