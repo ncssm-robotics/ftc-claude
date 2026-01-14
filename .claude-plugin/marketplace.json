@@ -14,58 +14,44 @@
     {
       "name": "decode",
       "description": "DECODE 2025-2026 FTC game reference - field layout, scoring, coordinates, autonomous strategies",
-      "version": "1.0.0",
-      "path": "plugins/decode",
-      "category": "game",
-      "tags": ["ftc", "game", "decode", "2025-2026", "coordinates"]
+      "source": "./plugins/decode",
+      "skills": ["./skills/decode"]
     },
     {
       "name": "pedro-pathing",
       "description": "Pedro Pathing library - Bezier curves, path building, heading interpolation, autonomous routines",
-      "version": "1.0.0",
-      "path": "plugins/pedro-pathing",
-      "category": "library",
-      "tags": ["ftc", "library", "pathing", "autonomous", "pedro"]
+      "source": "./plugins/pedro-pathing",
+      "skills": ["./skills/pedro-pathing"]
     },
     {
       "name": "pinpoint",
       "description": "GoBilda Pinpoint odometry computer - setup, pod offsets, tuning, LED status codes",
-      "version": "1.0.0",
-      "path": "plugins/pinpoint",
-      "category": "hardware",
-      "tags": ["ftc", "hardware", "odometry", "gobilda", "pinpoint"]
+      "source": "./plugins/pinpoint",
+      "skills": ["./skills/pinpoint"]
     },
     {
       "name": "limelight",
       "description": "Limelight 3A vision system - AprilTags, MegaTag2 localization, color tracking, auto-aim",
-      "version": "1.0.0",
-      "path": "plugins/limelight",
-      "category": "hardware",
-      "tags": ["ftc", "hardware", "vision", "limelight", "apriltag"]
+      "source": "./plugins/limelight",
+      "skills": ["./skills/limelight"]
     },
     {
       "name": "nextftc",
       "description": "NextFTC command-based framework - OpModes, commands, subsystems, gamepad bindings",
-      "version": "1.0.0",
-      "path": "plugins/nextftc",
-      "category": "framework",
-      "tags": ["ftc", "framework", "nextftc", "commands", "kotlin"]
+      "source": "./plugins/nextftc",
+      "skills": ["./skills/nextftc"]
     },
     {
       "name": "panels",
       "description": "Panels dashboard - telemetry graphs, live configuration, robot debugging",
-      "version": "1.0.0",
-      "path": "plugins/panels",
-      "category": "tools",
-      "tags": ["ftc", "tools", "dashboard", "telemetry", "debugging"]
+      "source": "./plugins/panels",
+      "skills": ["./skills/panels"]
     },
     {
       "name": "contributor",
       "description": "Contributor tools - skill-builder skill, /create-skill and /validate-skill commands for adding new plugins",
-      "version": "1.0.0",
-      "path": "plugins/contributor",
-      "category": "tools",
-      "tags": ["ftc", "contributor", "meta", "skill-builder", "development"]
+      "source": "./plugins/contributor",
+      "skills": ["./skills/skill-builder"]
     }
   ]
 }
