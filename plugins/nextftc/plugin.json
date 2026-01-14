@@ -1,0 +1,12 @@
+{
+  "name": "nextftc",
+  "description": "NextFTC command-based framework - OpModes, commands, subsystems, and gamepad bindings",
+  "version": "1.0.0",
+  "author": "NCSSM Robotics",
+  "license": "MIT",
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "tags": ["ftc", "framework", "nextftc", "commands", "subsystems", "kotlin"],
+  "compatibility": {
+    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
+  }
+}

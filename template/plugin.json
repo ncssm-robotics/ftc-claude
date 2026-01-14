@@ -1,0 +1,12 @@
+{
+  "name": "my-skill",
+  "description": "Brief description of what this skill does (max 100 chars for display)",
+  "version": "1.0.0",
+  "author": "Your Name or Team",
+  "license": "MIT",
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "tags": ["ftc", "category", "keywords"],
+  "compatibility": {
+    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
+  }
+}

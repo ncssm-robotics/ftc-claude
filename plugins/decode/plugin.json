@@ -1,0 +1,12 @@
+{
+  "name": "decode",
+  "description": "DECODE 2025-2026 FTC game reference - field layout, scoring, coordinates, and autonomous strategies",
+  "version": "1.0.0",
+  "author": "NCSSM Robotics",
+  "license": "MIT",
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "tags": ["ftc", "game", "decode", "2025-2026", "coordinates", "scoring"],
+  "compatibility": {
+    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
+  }
+}

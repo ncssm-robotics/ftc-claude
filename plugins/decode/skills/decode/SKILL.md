@@ -1,6 +1,13 @@
 ---
 name: decode
 description: DECODE 2025-2026 FTC game reference. Use when programming autonomous routines, calculating scores, understanding field layout, or working with game-specific coordinates.
+license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
+metadata:
+  author: ncssm-robotics
+  version: "1.0.0"
+  category: game
+  season: "2025-2026"
 ---
 
 # DECODE 2025-2026 FTC Game
@@ -73,17 +80,17 @@ Use `uv run` to execute conversion scripts:
 
 ```bash
 # FTC (meters) to Pedro (inches)
-uv run .claude/skills/decode/scripts/convert.py ftc-to-pedro 0 0 90
+uv run scripts/convert.py ftc-to-pedro 0 0 90
 
 # Tile coordinates to Pedro
-uv run .claude/skills/decode/scripts/convert.py tile-to-pedro 3 3
-uv run .claude/skills/decode/scripts/convert.py tile-center 2 4
+uv run scripts/convert.py tile-to-pedro 3 3
+uv run scripts/convert.py tile-center 2 4
 
 # Mirror red alliance pose for blue
-uv run .claude/skills/decode/scripts/convert.py mirror-blue 7 6.75 0
+uv run scripts/convert.py mirror-blue 7 6.75 0
 
 # Show all coordinate systems for a point
-uv run .claude/skills/decode/scripts/convert.py all 72 72
+uv run scripts/convert.py all 72 72
 ```
 
 ## Reference Documentation

@@ -1,6 +1,12 @@
 ---
 name: pedro-pathing
 description: Helps write autonomous and teleop code using Pedro Pathing library. Use when creating paths, building autonomous routines, setting up path following, working with Follower, PathChain, BezierLine, or heading interpolation.
+license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
+metadata:
+  author: ncssm-robotics
+  version: "1.0.0"
+  category: library
 ---
 
 # Pedro Pathing

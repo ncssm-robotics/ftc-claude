@@ -1,6 +1,12 @@
 ---
 name: panels
 description: Helps use the Panels dashboard for FTC robot debugging, configuration, and telemetry. Use when adding telemetry, creating graphs, making configurable variables, or setting up the Panels dashboard.
+license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
+metadata:
+  author: ncssm-robotics
+  version: "1.0.0"
+  category: tools
 ---
 
 # Panels Dashboard

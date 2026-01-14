@@ -1,0 +1,145 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate plugin structure
+        run: |
+          echo "🔍 Validating plugin structure..."
+
+          errors=0
+
+          # Check each plugin directory
+          for plugin_dir in plugins/*/; do
+            plugin_name=$(basename "$plugin_dir")
+            echo "📦 Checking plugin: $plugin_name"
+
+            # Check plugin.json exists
+            if [ ! -f "$plugin_dir/plugin.json" ]; then
+              echo "❌ Missing plugin.json in $plugin_name"
+              errors=$((errors + 1))
+            else
+              echo "  ✓ plugin.json exists"
+
+              # Validate plugin.json is valid JSON
+              if ! jq empty "$plugin_dir/plugin.json" 2>/dev/null; then
+                echo "❌ Invalid JSON in $plugin_dir/plugin.json"
+                errors=$((errors + 1))
+              else
+                echo "  ✓ plugin.json is valid JSON"
+              fi
+            fi
+
+            # Check skills directory exists
+            if [ ! -d "$plugin_dir/skills" ]; then
+              echo "❌ Missing skills/ directory in $plugin_name"
+              errors=$((errors + 1))
+            else
+              echo "  ✓ skills/ directory exists"
+            fi
+
+            # Check SKILL.md exists for each skill
+            for skill_dir in "$plugin_dir/skills/"*/; do
+              if [ -d "$skill_dir" ]; then
+                skill_name=$(basename "$skill_dir")
+                if [ ! -f "$skill_dir/SKILL.md" ]; then
+                  echo "❌ Missing SKILL.md in $skill_name"
+                  errors=$((errors + 1))
+                else
+                  echo "  ✓ $skill_name/SKILL.md exists"
+
+                  # Validate SKILL.md has required frontmatter
+                  if ! head -1 "$skill_dir/SKILL.md" | grep -q "^---$"; then
+                    echo "❌ SKILL.md missing YAML frontmatter in $skill_name"
+                    errors=$((errors + 1))
+                  else
+                    # Check for required fields
+                    if ! grep -q "^name:" "$skill_dir/SKILL.md"; then
+                      echo "❌ SKILL.md missing 'name' field in $skill_name"
+                      errors=$((errors + 1))
+                    fi
+                    if ! grep -q "^description:" "$skill_dir/SKILL.md"; then
+                      echo "❌ SKILL.md missing 'description' field in $skill_name"
+                      errors=$((errors + 1))
+                    fi
+                  fi
+                fi
+              fi
+            done
+
+            echo ""
+          done
+
+          # Check marketplace.json
+          echo "📋 Checking marketplace.json..."
+          if [ ! -f ".claude-plugin/marketplace.json" ]; then
+            echo "❌ Missing .claude-plugin/marketplace.json"
+            errors=$((errors + 1))
+          else
+            if ! jq empty ".claude-plugin/marketplace.json" 2>/dev/null; then
+              echo "❌ Invalid JSON in marketplace.json"
+              errors=$((errors + 1))
+            else
+              echo "✓ marketplace.json is valid"
+            fi
+          fi
+
+          echo ""
+          if [ $errors -gt 0 ]; then
+            echo "❌ Validation failed with $errors error(s)"
+            exit 1
+          else
+            echo "✅ All validations passed!"
+          fi
+
+      - name: Check skill name consistency
+        run: |
+          echo "🔍 Checking skill name consistency..."
+
+          errors=0
+
+          for plugin_dir in plugins/*/; do
+            plugin_name=$(basename "$plugin_dir")
+
+            for skill_dir in "$plugin_dir/skills/"*/; do
+              if [ -d "$skill_dir" ]; then
+                folder_name=$(basename "$skill_dir")
+
+                # Extract name from SKILL.md frontmatter
+                if [ -f "$skill_dir/SKILL.md" ]; then
+                  yaml_name=$(sed -n '/^---$/,/^---$/p' "$skill_dir/SKILL.md" | grep "^name:" | sed 's/name: *//')
+
+                  if [ "$folder_name" != "$yaml_name" ]; then
+                    echo "❌ Name mismatch in $plugin_name: folder='$folder_name' vs SKILL.md name='$yaml_name'"
+                    errors=$((errors + 1))
+                  else
+                    echo "✓ $plugin_name/$folder_name name is consistent"
+                  fi
+                fi
+              fi
+            done
+          done
+
+          if [ $errors -gt 0 ]; then
+            echo "❌ Name consistency check failed"
+            exit 1
+          else
+            echo "✅ All skill names are consistent!"
+          fi

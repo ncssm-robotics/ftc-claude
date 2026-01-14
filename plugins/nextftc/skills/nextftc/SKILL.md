@@ -1,6 +1,12 @@
 ---
 name: nextftc
 description: Helps write FTC robot code using the NextFTC command-based framework. Use when creating OpModes, commands, subsystems, gamepad bindings, or integrating with Pedro Pathing.
+license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
+metadata:
+  author: ncssm-robotics
+  version: "1.0.0"
+  category: framework
 ---
 
 # NextFTC

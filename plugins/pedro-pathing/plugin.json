@@ -1,0 +1,12 @@
+{
+  "name": "pedro-pathing",
+  "description": "Pedro Pathing library - Bezier curves, path building, heading interpolation, and autonomous routines",
+  "version": "1.0.0",
+  "author": "NCSSM Robotics",
+  "license": "MIT",
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "tags": ["ftc", "library", "pathing", "autonomous", "pedro", "bezier"],
+  "compatibility": {
+    "agents": ["claude-code", "codex", "cursor", "vscode-copilot"]
+  }
+}

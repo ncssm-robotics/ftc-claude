@@ -1,112 +1,148 @@
 # FTC Claude Skills Marketplace
 
-A marketplace for Claude Code skills designed to help FTC (FIRST Tech Challenge) robotics teams with programming.
+A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challenge) robotics teams with programming. Install only the skills your team needs.
 
-## What are Claude Skills?
-
-Claude Skills are knowledge packs that give Claude Code specialized expertise. When you add a skill to your project, Claude automatically gains deep knowledge about that topic - APIs, best practices, coordinate systems, and more.
+**Compatible with:** Claude Code, OpenAI Codex CLI, VS Code Copilot, Cursor, and other [Agent Skills](https://agentskills.io) compatible tools.
 
 ## Available Skills
 
-| Skill | Description |
-|-------|-------------|
-| **decode** | DECODE 2025-2026 FTC game reference - field layout, scoring, coordinates, autonomous strategies |
-| **pinpoint** | GoBilda Pinpoint odometry computer - setup, pod offsets, tuning, LED status codes |
-| **limelight** | Limelight 3A vision system - AprilTags, MegaTag2 localization, color tracking, auto-aim |
-| **pedro-pathing** | Pedro Pathing library - Bezier curves, path building, heading interpolation, autonomous routines |
-| **nextftc** | NextFTC command-based framework - OpModes, commands, subsystems, gamepad bindings |
-| **panels** | Panels dashboard - telemetry graphs, live configuration, debugging |
+| Skill | Category | Description |
+|-------|----------|-------------|
+| **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
+| **pedro-pathing** | Library | Pedro Pathing autonomous library - Bezier curves, path building |
+| **pinpoint** | Hardware | GoBilda Pinpoint odometry - setup, tuning, LED status codes |
+| **limelight** | Hardware | Limelight 3A vision - AprilTags, MegaTag2, color tracking |
+| **nextftc** | Framework | NextFTC command-based framework - commands, subsystems, bindings |
+| **panels** | Tools | Panels dashboard - telemetry graphs, live configuration |
 
 ## Installation
 
-### Option 1: Copy individual skills
-
-Copy the skill folders you need from `.claude/skills/` into your FTC project's `.claude/skills/` directory.
+### Option 1: Claude Code Plugin Marketplace (Recommended)
 
 ```bash
-# Example: Copy just pedro-pathing and pinpoint
-mkdir -p your-ftc-project/.claude/skills
-cp -r ftc-claude/.claude/skills/pedro-pathing your-ftc-project/.claude/skills/
-cp -r ftc-claude/.claude/skills/pinpoint your-ftc-project/.claude/skills/
+# Register the marketplace
+/plugin marketplace add ncssm-robotics/ftc-claude
+
+# Install individual skills
+/plugin install pedro-pathing@ncssm-robotics/ftc-claude
+/plugin install pinpoint@ncssm-robotics/ftc-claude
+/plugin install decode@ncssm-robotics/ftc-claude
 ```
 
-### Option 2: Clone the entire marketplace
+### Option 2: Install Script (Cross-Platform)
 
 ```bash
+# Clone the repository
 git clone https://github.com/ncssm-robotics/ftc-claude.git
+cd ftc-claude
+
+# Install specific skills (auto-detects your coding agent)
+./install.sh pedro-pathing pinpoint
+
+# Or install all skills
+./install.sh --all
+
+# Install to a specific agent
+./install.sh --agent codex pedro-pathing
+
+# Install to current project only
+./install.sh --project pedro-pathing pinpoint
 ```
 
-Then copy skills as needed to your project.
+### Option 3: Manual Copy
 
-## Skill Structure
+Copy skill folders directly to your agent's skills directory:
 
-Each skill follows this structure:
+| Agent | Skills Directory |
+|-------|------------------|
+| Claude Code | `~/.claude/skills/` or `.claude/skills/` |
+| Codex CLI | `~/.codex/skills/` or `.codex/skills/` |
+| Cursor | `~/.cursor/skills/` |
+| VS Code Copilot | Configure in settings |
 
-```
-.claude/skills/<skill-name>/
-├── SKILL.md              # Main skill file with frontmatter
-├── *.md                  # Additional documentation
-└── scripts/              # Optional utility scripts (Python)
-```
-
-### SKILL.md Format
-
-```yaml
----
-name: skill-name
-description: When Claude should use this skill...
----
-
-# Skill Title
-
-Main content that Claude learns from...
+```bash
+# Example: Copy pedro-pathing to Claude Code
+cp -r plugins/pedro-pathing/skills/pedro-pathing ~/.claude/skills/
 ```
 
-## Creating Your Own Skills
+## Usage
 
-1. Create a folder in `.claude/skills/` with your skill name
-2. Add a `SKILL.md` file with YAML frontmatter (`name` and `description`)
-3. Add supporting documentation as additional `.md` files
-4. Optionally add utility scripts in a `scripts/` subdirectory
+Once installed, skills activate automatically when relevant. Just ask Claude (or your coding agent) to help with FTC tasks:
 
-### Contributing
+```
+"Help me write an autonomous routine using Pedro Pathing"
+"Set up the Pinpoint odometry computer"
+"Create a NextFTC command for the lift subsystem"
+"What are the DECODE game scoring rules?"
+```
 
-We welcome contributions! To add a skill to the marketplace:
+## Repository Structure
+
+```
+ftc-claude/
+├── .claude-plugin/
+│   └── marketplace.json      # Plugin registry
+├── .github/workflows/
+│   └── validate-skills.yml   # CI/CD validation
+├── plugins/
+│   ├── decode/
+│   │   ├── plugin.json
+│   │   └── skills/decode/
+│   ├── pedro-pathing/
+│   ├── pinpoint/
+│   ├── limelight/
+│   ├── nextftc/
+│   └── panels/
+├── template/                 # Template for new skills
+├── install.sh                # Cross-platform installer
+├── CONTRIBUTING.md           # Contribution guide
+└── README.md
+```
+
+## Contributing
+
+We welcome contributions from the FTC community! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+### Quick Start for Contributors
 
 1. Fork this repository
-2. Create your skill in `.claude/skills/your-skill-name/`
-3. Submit a pull request with:
-   - Clear description of what the skill provides
-   - Example use cases
-   - Any dependencies or requirements
+2. Copy `template/` to `plugins/your-skill-name/`
+3. Update `plugin.json` and `SKILL.md`
+4. Submit a pull request
 
-## Utility Scripts
+### Skill Ideas We'd Love to See
 
-Some skills include Python utility scripts for coordinate conversions and calculations. Run them with `uv`:
+- **roadrunner** - RoadRunner path planning library
+- **ftclib** - FTCLib library patterns
+- **rev-hub** - REV Control Hub configuration
+- **spark-mini** - REV Spark Mini motor controller
+- **photonvision** - PhotonVision integration
+- **meepmeep** - MeepMeep path visualization
+- **easyopencv** - EasyOpenCV pipelines
 
-```bash
-# DECODE coordinate conversions
-uv run .claude/skills/decode/scripts/convert.py ftc-to-pedro 0 0 90
-uv run .claude/skills/decode/scripts/convert.py mirror-blue 7 6.75 0
+## About Agent Skills
 
-# Limelight calculations
-uv run .claude/skills/limelight/scripts/convert.py botpose-to-pedro 0.5 1.2 45
-uv run .claude/skills/limelight/scripts/convert.py distance 15 12 20 36
-```
+This marketplace follows the [Agent Skills](https://agentskills.io) open standard, originally developed by Anthropic. Skills you install here work across multiple AI coding agents.
 
-## Permissions
+### How Skills Work
 
-The included `settings.local.json` grants Claude permission to:
-- Run Gradle builds (`./gradlew build`, `./gradlew assembleDebug`)
-- Fetch documentation from approved sites (pedropathing.com, panels.bylazar.com, github.com)
-
-## FTC Resources
-
-- [FIRST Tech Challenge](https://www.firstinspires.org/robotics/ftc)
-- [Pedro Pathing Documentation](https://pedropathing.com)
-- [Panels Dashboard](https://panels.bylazar.com)
-- [NextFTC GitHub](https://github.com/AnyiLin/NextFTC)
+1. **Discovery** - Your coding agent reads skill metadata at startup
+2. **Activation** - When you ask a relevant question, the agent loads the skill
+3. **Context** - The skill provides specialized knowledge and examples
+4. **Assistance** - The agent uses this knowledge to help you more effectively
 
 ## License
 
 MIT License - see [LICENSE](LICENSE)
+
+## Resources
+
+- [Agent Skills Specification](https://agentskills.io/specification)
+- [Anthropic Skills Repository](https://github.com/anthropics/skills)
+- [FIRST Tech Challenge](https://www.firstinspires.org/robotics/ftc)
+- [Pedro Pathing Documentation](https://pedropathing.com)
+- [NextFTC GitHub](https://github.com/AnyiLin/NextFTC)
+
+---
+
+Made with ❤️ by the FTC community

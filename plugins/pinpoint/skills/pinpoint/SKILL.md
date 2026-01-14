@@ -1,6 +1,12 @@
 ---
 name: pinpoint
 description: Helps configure and use the GoBilda Pinpoint odometry computer for robot localization. Use when setting up Pinpoint, configuring pod offsets, troubleshooting LED status, tuning encoders, or integrating with Pedro Pathing.
+license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
+metadata:
+  author: ncssm-robotics
+  version: "1.0.0"
+  category: hardware
 ---
 
 # GoBilda Pinpoint Odometry Computer

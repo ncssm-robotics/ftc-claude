@@ -1,6 +1,12 @@
 ---
 name: limelight
 description: Helps integrate Limelight 3A vision system for FTC robots. Use when working with AprilTag detection, MegaTag2 localization, color tracking, or shooter auto-aim.
+license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
+metadata:
+  author: ncssm-robotics
+  version: "1.0.0"
+  category: hardware
 ---
 
 # Limelight 3A for FTC
@@ -88,14 +94,14 @@ Use `uv run` to execute conversion scripts:
 
 ```bash
 # Convert Limelight botpose to Pedro coordinates
-uv run .claude/skills/limelight/scripts/convert.py botpose-to-pedro 0.5 1.2 45
+uv run scripts/convert.py botpose-to-pedro 0.5 1.2 45
 
 # Calculate turret ticks from tx
-uv run .claude/skills/limelight/scripts/convert.py tx-to-turret -5.5
-uv run .claude/skills/limelight/scripts/convert.py tx-to-turret -5.5 12.0  # custom ticks/degree
+uv run scripts/convert.py tx-to-turret -5.5
+uv run scripts/convert.py tx-to-turret -5.5 12.0  # custom ticks/degree
 
 # Calculate distance from ty (ty, cam_height, cam_angle, target_height)
-uv run .claude/skills/limelight/scripts/convert.py distance 15 12 20 36
+uv run scripts/convert.py distance 15 12 20 36
 ```
 
 ## Reference Documentation
