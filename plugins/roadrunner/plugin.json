@@ -1,0 +1,12 @@
+{
+  "name": "roadrunner",
+  "version": "1.0.0",
+  "description": "RoadRunner path planning library - trajectories, motion profiles, localization, and autonomous routines",
+  "author": {
+    "name": "NCSSM Robotics",
+    "url": "https://github.com/ncssm-robotics"
+  },
+  "repository": "https://github.com/ncssm-robotics/ftc-claude",
+  "license": "MIT",
+  "keywords": ["ftc", "library", "roadrunner", "pathing", "trajectory", "autonomous", "motion-profile"]
+}

@@ -52,6 +52,12 @@
       "description": "Contributor tools - skill-builder skill, /create-skill and /validate-skill commands for adding new plugins",
       "source": "./plugins/contributor",
       "skills": ["./skills/skill-builder"]
+    },
+    {
+      "name": "roadrunner",
+      "description": "RoadRunner path planning library - trajectories, motion profiles, localization, autonomous routines",
+      "source": "./plugins/roadrunner",
+      "skills": ["./skills/roadrunner"]
     }
   ]
 }
