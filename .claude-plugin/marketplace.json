@@ -13,60 +13,70 @@
   "plugins": [
     {
       "name": "decode",
+      "version": "1.0.0",
       "description": "DECODE 2025-2026 FTC game reference - field layout, scoring, coordinates, autonomous strategies",
       "source": "./plugins/decode",
       "skills": ["./skills/decode"]
     },
     {
       "name": "pedro-pathing",
+      "version": "1.0.0",
       "description": "Pedro Pathing library - Bezier curves, path building, heading interpolation, autonomous routines",
       "source": "./plugins/pedro-pathing",
       "skills": ["./skills/pedro-pathing"]
     },
     {
       "name": "pinpoint",
+      "version": "1.0.0",
       "description": "GoBilda Pinpoint odometry computer - setup, pod offsets, tuning, LED status codes",
       "source": "./plugins/pinpoint",
       "skills": ["./skills/pinpoint"]
     },
     {
       "name": "limelight",
+      "version": "1.0.0",
       "description": "Limelight 3A vision system - AprilTags, MegaTag2 localization, color tracking, auto-aim",
       "source": "./plugins/limelight",
       "skills": ["./skills/limelight"]
     },
     {
       "name": "nextftc",
+      "version": "1.0.0",
       "description": "NextFTC command-based framework - OpModes, commands, subsystems, gamepad bindings",
       "source": "./plugins/nextftc",
       "skills": ["./skills/nextftc"]
     },
     {
       "name": "panels",
+      "version": "1.0.0",
       "description": "Panels dashboard - telemetry graphs, live configuration, robot debugging",
       "source": "./plugins/panels",
       "skills": ["./skills/panels"]
     },
     {
       "name": "contributor",
+      "version": "1.0.0",
       "description": "Contributor tools - skill-builder skill, /create-skill and /validate-skill commands for adding new plugins",
       "source": "./plugins/contributor",
       "skills": ["./skills/skill-builder"]
     },
     {
       "name": "roadrunner",
+      "version": "1.0.0",
       "description": "RoadRunner path planning library - trajectories, motion profiles, localization, autonomous routines",
       "source": "./plugins/roadrunner",
       "skills": ["./skills/roadrunner"]
     },
     {
       "name": "robot-dev",
+      "version": "1.0.0",
       "description": "FTC development commands - build, deploy, connect, debug, and control OpModes",
       "source": "./plugins/robot-dev",
       "skills": ["./skills/robot-dev"]
     },
     {
       "name": "ftc-dashboard",
+      "version": "1.0.0",
       "description": "FTC Dashboard - telemetry visualization, @Config variables, field overlay drawing, camera streaming",
       "source": "./plugins/ftc-dashboard",
       "skills": ["./skills/ftc-dashboard"]

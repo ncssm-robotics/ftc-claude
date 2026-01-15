@@ -92,12 +92,13 @@ Once installed, skills activate automatically when relevant. Just ask Claude (or
 ```
 ftc-claude/
 ├── .claude-plugin/
-│   └── marketplace.json      # Plugin registry
+│   └── marketplace.json      # Plugin registry with versions
 ├── .github/workflows/
-│   └── validate-skills.yml   # CI/CD validation
+│   └── validate-skills.yml   # CI/CD validation including version checks
 ├── plugins/
 │   ├── decode/
-│   │   ├── plugin.json
+│   │   ├── plugin.json       # Plugin metadata with version
+│   │   ├── CHANGELOG.md      # Version history
 │   │   └── skills/decode/
 │   ├── pedro-pathing/
 │   ├── roadrunner/
@@ -114,6 +115,7 @@ ftc-claude/
 │       └── commands/
 ├── template/                 # Template for new skills
 ├── install.sh                # Cross-platform installer
+├── VERSIONING.md             # Semantic versioning guidelines
 ├── CONTRIBUTING.md           # Contribution guide
 └── README.md
 ```

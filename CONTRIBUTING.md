@@ -8,6 +8,7 @@ Thank you for your interest in contributing to the FTC Claude Skills Marketplace
 - [Manual Contribution](#manual-contribution)
 - [Skill Structure](#skill-structure)
 - [Writing Good Skills](#writing-good-skills)
+- [Versioning Guidelines](#versioning-guidelines)
 - [Testing Your Skill](#testing-your-skill)
 - [Submitting a Pull Request](#submitting-a-pull-request)
 - [Code of Conduct](#code-of-conduct)
@@ -230,6 +231,87 @@ Move detailed content to reference files:
 
 Put the most common use case first. Users should be able to get started by reading just the first section.
 
+## Versioning Guidelines
+
+All plugins follow [Semantic Versioning 2.0.0](https://semver.org/). See [VERSIONING.md](VERSIONING.md) for complete details.
+
+### Version Format
+
+```
+MAJOR.MINOR.PATCH (e.g., 1.2.3)
+```
+
+- **MAJOR**: Breaking changes (removed features, changed formats)
+- **MINOR**: New features (backward compatible)
+- **PATCH**: Bug fixes, typos, clarifications
+
+### When to Bump Versions
+
+| Change Type | Version Bump | Example |
+|-------------|--------------|---------|
+| Remove a section | MAJOR | Removing specimen scoring from decode |
+| Change coordinate system | MAJOR | Switching from inches to meters |
+| Add new documentation | MINOR | Adding teleop strategies |
+| Support new firmware | MINOR | Adding Pinpoint v2.0 support |
+| Fix typos | PATCH | Correcting "12" to "120" inches |
+| Update broken links | PATCH | Fixing GitHub URLs |
+
+### Version Bump Process
+
+1. **Update `plugin.json`:**
+   ```json
+   "version": "1.1.0"
+   ```
+
+2. **Update `SKILL.md` frontmatter:**
+   ```yaml
+   metadata:
+     version: "1.1.0"
+   ```
+
+3. **Update `.claude-plugin/marketplace.json`:**
+   ```json
+   {
+     "name": "your-skill",
+     "version": "1.1.0",
+     ...
+   }
+   ```
+
+4. **Update `CHANGELOG.md`:**
+   ```markdown
+   ## [1.1.0] - 2025-01-15
+
+   ### Added
+   - New teleop strategies section
+   ```
+
+5. **Commit with conventional format:**
+   ```bash
+   git commit -m "feat(decode): add teleop strategies section"
+   ```
+
+### Changelog Format
+
+Each plugin has a `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/) format:
+
+```markdown
+## [1.1.0] - 2025-01-15
+
+### Added
+- New features
+
+### Changed
+- Modified behavior
+
+### Fixed
+- Bug fixes
+```
+
+### New Skills Start at 1.0.0
+
+New skills should start at version `1.0.0`. Use `0.x.x` only for skills still under active development where the API may change.
+
 ## Testing Your Skill
 
 ### Install Locally
@@ -303,14 +385,22 @@ Your PR will automatically run validation checks. Fix any errors before requesti
 
 ## Checklist Before Submitting
 
+### New Skills
 - [ ] `name` in SKILL.md matches the folder name
 - [ ] `name` is lowercase with hyphens only
 - [ ] `description` clearly explains when to use this skill
 - [ ] Code examples are tested and working
 - [ ] No sensitive information (API keys, team credentials)
-- [ ] Added to `marketplace.json`
+- [ ] Added to `marketplace.json` with version field
 - [ ] License specified (MIT recommended)
 - [ ] Spell-checked content
+- [ ] `CHANGELOG.md` created with initial 1.0.0 entry
+
+### Skill Updates
+- [ ] Version bumped in all three locations (plugin.json, SKILL.md, marketplace.json)
+- [ ] Version bump appropriate for changes (MAJOR/MINOR/PATCH)
+- [ ] `CHANGELOG.md` updated with new version entry
+- [ ] All three version fields match exactly
 
 ## Skill Categories
 

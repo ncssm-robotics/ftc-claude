@@ -143,3 +143,97 @@ jobs:
           else
             echo "✅ All skill names are consistent!"
           fi
+
+      - name: Validate version format and consistency
+        run: |
+          echo "🔢 Validating plugin versions..."
+
+          errors=0
+          warnings=0
+
+          # Semantic version regex (X.Y.Z with optional prerelease)
+          semver_regex='^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$'
+
+          for plugin_dir in plugins/*/; do
+            plugin_name=$(basename "$plugin_dir")
+            echo "📦 Checking version for: $plugin_name"
+
+            # Get version from plugin.json
+            if [ -f "$plugin_dir/plugin.json" ]; then
+              plugin_version=$(jq -r '.version // empty' "$plugin_dir/plugin.json")
+
+              if [ -z "$plugin_version" ]; then
+                echo "❌ Missing version field in $plugin_name/plugin.json"
+                errors=$((errors + 1))
+              elif ! echo "$plugin_version" | grep -qE "$semver_regex"; then
+                echo "❌ Invalid version format '$plugin_version' in $plugin_name (expected X.Y.Z)"
+                errors=$((errors + 1))
+              else
+                echo "  ✓ plugin.json version: $plugin_version"
+              fi
+
+              # Check version in SKILL.md metadata
+              for skill_dir in "$plugin_dir/skills/"*/; do
+                if [ -d "$skill_dir" ] && [ -f "$skill_dir/SKILL.md" ]; then
+                  skill_name=$(basename "$skill_dir")
+
+                  # Extract version from SKILL.md frontmatter metadata block
+                  skill_version=$(awk '
+                    BEGIN { in_frontmatter=0; in_metadata=0 }
+                    /^---$/ {
+                      if (in_frontmatter) exit
+                      in_frontmatter=1
+                      next
+                    }
+                    in_frontmatter && /^metadata:/ { in_metadata=1; next }
+                    in_frontmatter && in_metadata && /^  version:/ {
+                      gsub(/^  version: *["'\'']?/, "")
+                      gsub(/["'\'']$/, "")
+                      print
+                      exit
+                    }
+                    in_frontmatter && /^[a-z]/ && !/^  / { in_metadata=0 }
+                  ' "$skill_dir/SKILL.md")
+
+                  if [ -n "$skill_version" ]; then
+                    if [ "$plugin_version" != "$skill_version" ]; then
+                      echo "❌ Version mismatch in $plugin_name: plugin.json='$plugin_version' vs SKILL.md='$skill_version'"
+                      errors=$((errors + 1))
+                    else
+                      echo "  ✓ SKILL.md version matches: $skill_version"
+                    fi
+                  else
+                    echo "  ⚠ No version in SKILL.md metadata for $skill_name (recommended)"
+                    warnings=$((warnings + 1))
+                  fi
+                fi
+              done
+
+              # Check version in marketplace.json
+              marketplace_version=$(jq -r --arg name "$plugin_name" '.plugins[] | select(.name == $name) | .version // empty' .claude-plugin/marketplace.json)
+
+              if [ -z "$marketplace_version" ]; then
+                echo "  ⚠ No version in marketplace.json for $plugin_name (recommended)"
+                warnings=$((warnings + 1))
+              elif [ "$plugin_version" != "$marketplace_version" ]; then
+                echo "❌ Version mismatch: plugin.json='$plugin_version' vs marketplace.json='$marketplace_version'"
+                errors=$((errors + 1))
+              else
+                echo "  ✓ marketplace.json version matches: $marketplace_version"
+              fi
+            fi
+
+            echo ""
+          done
+
+          echo ""
+          if [ $warnings -gt 0 ]; then
+            echo "⚠ $warnings warning(s) - consider adding missing version fields"
+          fi
+
+          if [ $errors -gt 0 ]; then
+            echo "❌ Version validation failed with $errors error(s)"
+            exit 1
+          else
+            echo "✅ All version validations passed!"
+          fi
