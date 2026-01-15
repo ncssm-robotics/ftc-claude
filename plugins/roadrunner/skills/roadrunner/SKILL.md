@@ -3,8 +3,9 @@ name: roadrunner
 description: >-
   Helps build autonomous routines using the RoadRunner 1.0 path planning library.
   Use when creating trajectories, configuring motion profiles, setting up
-  localization, tuning drive constants, building spline paths, or combining
-  actions for complex autonomous sequences.
+  localization, tuning drive constants, building spline paths, combining
+  actions for complex autonomous sequences, or converting coordinates between
+  RoadRunner, Pedro Pathing, and FTC/Limelight coordinate systems.
 license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
