@@ -41,10 +41,12 @@ update_skill_md() {
     local plugin_name="$2"
     local new_version="$3"
 
-    local skill_md="$plugin_dir/skills/$plugin_name/SKILL.md"
+    # Find the SKILL.md file (may not match plugin name, e.g., contributor/skills/skill-builder/)
+    local skill_md
+    skill_md=$(find "$plugin_dir/skills" -name "SKILL.md" -type f | head -n 1)
 
-    if [ ! -f "$skill_md" ]; then
-        echo "Error: SKILL.md not found: $skill_md" >&2
+    if [ -z "$skill_md" ] || [ ! -f "$skill_md" ]; then
+        echo "Error: SKILL.md not found in $plugin_dir/skills/" >&2
         return 1
     fi
 
@@ -170,17 +172,25 @@ verify_version_consistency() {
     local plugin_json_version
     plugin_json_version=$(jq -r '.version' "$plugin_dir/plugin.json")
 
+    # Find the SKILL.md file dynamically
+    local skill_md
+    skill_md=$(find "$plugin_dir/skills" -name "SKILL.md" -type f | head -n 1)
+
     local skill_md_version
-    skill_md_version=$(awk '
-        BEGIN { in_metadata=0 }
-        /^metadata:/ { in_metadata=1; next }
-        in_metadata && /^  version:/ {
-            match($0, /"([^"]+)"/, arr)
-            print arr[1]
-            exit
-        }
-        in_metadata && /^[^ ]/ { exit }
-    ' "$plugin_dir/skills/$plugin_name/SKILL.md")
+    if [ -f "$skill_md" ]; then
+        skill_md_version=$(awk '
+            BEGIN { in_metadata=0 }
+            /^metadata:/ { in_metadata=1; next }
+            in_metadata && /^  version:/ {
+                match($0, /"([^"]+)"/, arr)
+                print arr[1]
+                exit
+            }
+            in_metadata && /^[^ ]/ { exit }
+        ' "$skill_md")
+    else
+        skill_md_version="NOT_FOUND"
+    fi
 
     local marketplace_version
     marketplace_version=$(jq -r --arg name "$plugin_name" \
