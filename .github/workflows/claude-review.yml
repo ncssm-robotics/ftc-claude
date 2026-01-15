@@ -1,0 +1,30 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Review this pull request for the FTC Claude Skills Marketplace.
+
+            Focus on:
+            1. Summary of changes
+            2. Code quality and best practices
+            3. Potential issues or improvements
+            4. For skills: check SKILL.md has proper frontmatter, description includes WHAT and WHEN triggers
