@@ -53,70 +53,38 @@ jobs:
         if: steps.merge.outputs.success == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          # Get the latest commit on main
           main_commit=$(git rev-parse origin/main)
           main_short=$(git rev-parse --short origin/main)
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-          # Create issue body
-          cat > issue_body.md <<'EOF'
-## Merge Conflict Detected
-
-The automatic sync from `main` to `develop` failed due to merge conflicts.
-
-**Main commit:** `MAIN_SHORT_PLACEHOLDER` (MAIN_COMMIT_PLACEHOLDER)
-
-### Manual Resolution Required
-
-1. Checkout the develop branch:
-   ```bash
-   git checkout develop
-   git pull origin develop
-   ```
-
-2. Merge main into develop:
-   ```bash
-   git merge origin/main
-   ```
-
-3. Resolve any conflicts manually
-
-4. Commit and push:
-   ```bash
-   git commit
-   git push origin develop
-   ```
-
-### Why This Happened
-
-This usually occurs when:
-- Hotfixes were committed directly to main (bypassing develop)
-- Multiple release PRs were merged in quick succession
-- Manual edits were made to main outside the release process
-
-### Prevention
-
-- Always merge changes through develop first
-- Use the release process for all version bumps
-- Avoid direct commits to main
-
----
-**Automated issue created by sync-develop workflow**
-Run: RUN_URL_PLACEHOLDER
-EOF
-
-          # Substitute variables
-          sed -i "s/MAIN_SHORT_PLACEHOLDER/$main_short/g" issue_body.md
-          sed -i "s/MAIN_COMMIT_PLACEHOLDER/$main_commit/g" issue_body.md
-          sed -i "s|RUN_URL_PLACEHOLDER|$RUN_URL|g" issue_body.md
-
-          # Create the issue
           gh issue create \
-            --title "⚠️ Failed to sync develop with main" \
+            --title "Failed to sync develop with main" \
             --label "maintenance" \
             --label "urgent" \
-            --body-file issue_body.md
+            --body "## Merge Conflict Detected
+
+          The automatic sync from main to develop failed due to merge conflicts.
+
+          **Main commit:** ${main_short} (${main_commit})
+
+          ### Manual Resolution Required
+
+          1. Checkout the develop branch and merge main manually
+          2. Resolve any conflicts
+          3. Push the resolved changes
+
+          ### Why This Happened
+
+          This usually occurs when hotfixes were committed directly to main or multiple release PRs were merged in quick succession.
+
+          ### Prevention
+
+          Always merge changes through develop first and use the release process for all version bumps.
+
+          ---
+          Automated issue created by sync-develop workflow
+          Run: ${run_url}"
 
       - name: Abort merge on failure
         if: steps.merge.outputs.success == 'false'
