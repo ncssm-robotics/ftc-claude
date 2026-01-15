@@ -23,18 +23,23 @@ The easiest way to contribute is to use the **contributor** plugin, which includ
 git clone https://github.com/YOUR-USERNAME/ftc-claude.git
 cd ftc-claude
 
-# 2. Install contributor tools
+# 2. Register the marketplace
+/plugin marketplace add ncssm-robotics/ftc-claude
+
+# 3. Install contributor tools
 /plugin install contributor@ncssm-robotics/ftc-claude
 
-# 3. Create a new skill
-/create-skill roadrunner library
+# 4. Restart Claude Code
 
-# 4. Claude guides you through filling in the content
+# 5. Create a new skill
+/contributor:create-skill roadrunner library
 
-# 5. Validate before submitting
-/validate-skill roadrunner
+# 6. Claude guides you through filling in the content
 
-# 6. Submit PR
+# 7. Validate before submitting
+/contributor:validate-skill roadrunner
+
+# 8. Submit PR
 ```
 
 ### Natural Language Approach
