@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGINS_DIR="$SCRIPT_DIR/plugins"
 
 # Available skills
-AVAILABLE_SKILLS=("decode" "pedro-pathing" "pinpoint" "limelight" "nextftc" "panels" "contributor")
+AVAILABLE_SKILLS=("decode" "pedro-pathing" "pinpoint" "limelight" "nextftc" "panels" "contributor" "control-engineer")
 
 # Agent skill directories
 declare -A AGENT_DIRS=(

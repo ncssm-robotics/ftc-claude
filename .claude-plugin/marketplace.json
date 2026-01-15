@@ -61,7 +61,7 @@
     },
     {
       "name": "robot-dev",
-      "description": "FTC development commands - build, deploy, connect, debug, and control OpModes",
+      "description": "FTC development commands - build, deploy, connect, debug, and control OpModes. Includes tuning orchestration scripts.",
       "source": "./plugins/robot-dev",
       "skills": ["./skills/robot-dev"]
     },
@@ -70,6 +70,12 @@
       "description": "FTC Dashboard - telemetry visualization, @Config variables, field overlay drawing, camera streaming",
       "source": "./plugins/ftc-dashboard",
       "skills": ["./skills/ftc-dashboard"]
+    },
+    {
+      "name": "control-engineer",
+      "description": "Control system guide with autonomous tuning - PID, feedforward, /tune-controller command for automated parameter optimization",
+      "source": "./plugins/control-engineer",
+      "skills": ["./skills/control-engineer"]
     }
   ]
 }
