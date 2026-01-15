@@ -24,7 +24,7 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 
 | Skill | Description |
 |-------|-------------|
-| **contributor** | Skill-builder tools for creating new FTC skills - includes `/create-skill` and `/validate-skill` commands |
+| **contributor** | Skill-builder tools for managing FTC skills - includes `/create-skill`, `/validate-skill`, and `/version` commands |
 
 ## Installation
 

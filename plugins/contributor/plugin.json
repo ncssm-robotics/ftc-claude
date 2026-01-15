@@ -1,12 +1,12 @@
 {
   "name": "contributor",
-  "version": "1.0.0",
-  "description": "Contributor tools - skill-builder skill, /create-skill and /validate-skill commands for adding new plugins",
+  "version": "1.1.0",
+  "description": "Contributor tools - /create-skill, /validate-skill, and /version commands for managing FTC plugins",
   "author": {
     "name": "NCSSM Robotics",
     "url": "https://github.com/ncssm-robotics"
   },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
   "license": "MIT",
-  "keywords": ["ftc", "contributor", "meta", "skill-builder", "development"]
+  "keywords": ["ftc", "contributor", "meta", "skill-builder", "development", "versioning"]
 }

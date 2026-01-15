@@ -86,14 +86,32 @@ The CI workflow validates that these versions match.
 
 ## Version Bump Process
 
-### 1. Determine Version Type
+### Automated (Recommended)
+
+Use the `/contributor:version` command for guided version bumping:
+
+```bash
+/contributor:version decode
+```
+
+This command will:
+1. Ask what type of change (MAJOR/MINOR/PATCH)
+2. Ask what categories of changes (Added/Changed/Fixed/Removed)
+3. Update version in all three locations automatically
+4. Create a changelog entry with today's date
+
+### Manual Process
+
+If you prefer to update versions manually:
+
+#### 1. Determine Version Type
 
 Review your changes against the criteria above:
 - Breaking change? → MAJOR bump
 - New feature? → MINOR bump
 - Bug fix only? → PATCH bump
 
-### 2. Update Both Version Locations
+#### 2. Update All Three Version Locations
 
 ```bash
 # In plugin.json
@@ -102,9 +120,12 @@ Review your changes against the criteria above:
 # In SKILL.md frontmatter
 metadata:
   version: "1.2.0"  →  version: "1.3.0"
+
+# In marketplace.json
+"version": "1.2.0"  →  "version": "1.3.0"
 ```
 
-### 3. Update Changelog
+#### 3. Update Changelog
 
 Add an entry to `CHANGELOG.md` in the plugin directory:
 
@@ -118,7 +139,7 @@ Add an entry to `CHANGELOG.md` in the plugin directory:
 - Updated specimen scoring points to match Game Manual 2.1
 ```
 
-### 4. Commit with Version Tag
+#### 4. Commit with Version Tag
 
 Use conventional commit format:
 

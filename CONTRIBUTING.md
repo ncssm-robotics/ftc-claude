@@ -258,6 +258,24 @@ MAJOR.MINOR.PATCH (e.g., 1.2.3)
 
 ### Version Bump Process
 
+#### Automated (Recommended)
+
+Use the `/contributor:version` command for guided version bumping:
+
+```bash
+/contributor:version decode
+```
+
+This will interactively:
+1. Ask what type of change (MAJOR/MINOR/PATCH)
+2. Ask what changed (Added/Changed/Fixed/Removed)
+3. Update all three version locations automatically
+4. Create changelog entry with today's date
+
+#### Manual Process
+
+If you prefer manual updates:
+
 1. **Update `plugin.json`:**
    ```json
    "version": "1.1.0"

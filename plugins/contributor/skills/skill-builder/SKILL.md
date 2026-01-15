@@ -5,7 +5,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: ncssm-robotics
-  version: "1.0.0"
+  version: "1.1.0"
   category: tools
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(mkdir:*), Bash(chmod:*)
 ---
@@ -46,11 +46,36 @@ This skill teaches you how to create high-quality skills for the FTC Claude Skil
 | `tools` | Development tools | Panels, MeepMeep, EasyOpenCV |
 | `game` | Season-specific | DECODE 2025-2026, INTO THE DEEP |
 
+## Available Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/contributor:create-skill <name> [category]` | Create new plugin from template |
+| `/contributor:validate-skill <name>` | Validate plugin structure before PR |
+| `/contributor:version <name>` | Bump version with guided changelog |
+
+### Version Bump Command
+
+Use `/contributor:version` to update plugin versions across all required locations:
+
+```
+/contributor:version decode
+```
+
+This command will:
+1. Ask what type of change (MAJOR/MINOR/PATCH)
+2. Ask what categories of changes (Added/Changed/Fixed/Removed)
+3. Update version in `plugin.json`, `SKILL.md`, and `marketplace.json`
+4. Create changelog entry with today's date
+
+See [VERSIONING.md](../../../VERSIONING.md) for complete versioning guidelines.
+
 ## Skill Anatomy
 
 ```
 plugins/your-skill-name/
 ├── plugin.json                    # Plugin metadata
+├── CHANGELOG.md                   # Version history
 └── skills/
     └── your-skill-name/
         ├── SKILL.md               # Main instructions (required)
