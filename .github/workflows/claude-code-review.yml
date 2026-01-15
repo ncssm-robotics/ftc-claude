@@ -29,6 +29,7 @@ jobs:
           # Use API key for fork PR compatibility with pull_request_target
           # OIDC token exchange doesn't work reliably with pull_request_target
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
