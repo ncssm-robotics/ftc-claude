@@ -13,7 +13,6 @@ jobs:
       contents: read
       pull-requests: write  # write needed to post review comments
       issues: read
-      id-token: write  # needed for claude_code_oauth_token OIDC
 
     steps:
       # Checkout the PR's code (not base branch) for review
@@ -27,9 +26,9 @@ jobs:
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
-          # Use claude_code_oauth_token (uses MAX account tokens, not API)
-          # pull_request_target gives us OIDC access even for fork PRs
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Use API key for fork PR compatibility with pull_request_target
+          # OIDC token exchange doesn't work reliably with pull_request_target
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
