@@ -1,7 +1,9 @@
 name: Claude Code Review
 
 on:
-  pull_request:
+  # Use pull_request_target to enable fork PR reviews with secrets access
+  # This runs in the base repo's context (has secrets) but checks out PR code
+  pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
 
 jobs:
@@ -11,21 +13,23 @@ jobs:
       contents: read
       pull-requests: write  # write needed to post review comments
       issues: read
+      id-token: write  # needed for claude_code_oauth_token OIDC
 
     steps:
+      # Checkout the PR's code (not base branch) for review
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 1
 
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
-          # Use API key + github_token for fork PR compatibility
-          # claude_code_oauth_token uses OIDC which doesn't work for fork PRs
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Use claude_code_oauth_token (uses MAX account tokens, not API)
+          # pull_request_target gives us OIDC access even for fork PRs
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
