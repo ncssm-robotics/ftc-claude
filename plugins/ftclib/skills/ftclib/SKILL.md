@@ -418,6 +418,19 @@ public class DriveCommand extends CommandBase {
 
 ## Reference Documentation
 
+### Detailed Guides
+
+- [COMMANDS.md](COMMANDS.md) - Command lifecycle, groups, decorators, and convenience commands
+- [SUBSYSTEMS.md](SUBSYSTEMS.md) - Subsystem patterns, registration, and examples
+- [GAMEPAD.md](GAMEPAD.md) - GamepadEx, button bindings, and triggers
+- [HARDWARE.md](HARDWARE.md) - Motors, servos, sensors, and PID controllers
+- [DRIVEBASE.md](DRIVEBASE.md) - Mecanum, differential, and H-drive implementations
+- [ODOMETRY.md](ODOMETRY.md) - Position tracking with dead wheels
+- [PURE_PURSUIT.md](PURE_PURSUIT.md) - Path following with waypoints
+- [VISION.md](VISION.md) - EasyOpenCV pipelines and camera setup
+
+### External Resources
+
 - [FTCLib Documentation](https://docs.ftclib.org/ftclib)
 - [FTCLib GitHub](https://github.com/FTCLib/FTCLib)
 - [Command System](https://docs.ftclib.org/ftclib/command-base/command-system)
