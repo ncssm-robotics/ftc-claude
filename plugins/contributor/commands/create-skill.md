@@ -39,6 +39,7 @@ When this command is invoked:
    ```
    plugins/<skill-name>/
    ├── plugin.json
+   ├── CHANGELOG.md
    └── skills/
        └── <skill-name>/
            └── SKILL.md
@@ -56,11 +57,22 @@ When this command is invoked:
    - Template sections (Quick Start, Key Concepts, Patterns, Anti-Patterns, Examples)
    - Placeholder content marked with `[TODO: ...]`
 
-5. **Add to marketplace.json**
-   - Add entry to the plugins array
-   - Set path to `plugins/<skill-name>`
+5. **Generate CHANGELOG.md** with:
+   - Initial version 1.0.0 entry
+   - Today's date
+   - "Initial release" placeholder
 
-6. **Prompt user** to fill in:
+6. **Add to marketplace.json**
+   - Add entry to the plugins array
+   - Include version field set to "1.0.0"
+   - Set source to `./plugins/<skill-name>`
+
+7. **Add to README.md skill table**
+   - Add row to appropriate category table (FTC Skills or Contributor Tools)
+   - Include skill name, category, and brief description
+   - Ensure table stays alphabetically sorted within category
+
+8. **Prompt user** to fill in:
    - Description (WHAT + WHEN)
    - Quick Start content
    - Code examples
@@ -74,10 +86,20 @@ Guide the user through:
 2. Adding Quick Start with working code examples
 3. Creating Good/Bad example comparisons
 4. Testing the skill activates correctly
+5. Verifying README.md skill table entry is accurate
 
 ## Validation
 
 After creating, suggest running:
 ```
-/validate-skill <skill-name>
+/contributor:validate-skill <skill-name>
 ```
+
+## Checklist
+
+Before completing, verify:
+- [ ] `plugins/<skill-name>/plugin.json` created with version "1.0.0"
+- [ ] `plugins/<skill-name>/CHANGELOG.md` created with 1.0.0 entry
+- [ ] `plugins/<skill-name>/skills/<skill-name>/SKILL.md` created
+- [ ] Entry added to `.claude-plugin/marketplace.json` with version
+- [ ] Row added to README.md skill table

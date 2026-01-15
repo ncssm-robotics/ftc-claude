@@ -133,13 +133,18 @@ The easiest way to contribute is to let Claude help you build the skill:
 /plugin install contributor@ncssm-robotics/ftc-claude
 
 # 2. Create a new skill (Claude guides you through it)
-/create-skill roadrunner library
+/contributor:create-skill roadrunner library
 
 # 3. Validate before submitting
-/validate-skill roadrunner
+/contributor:validate-skill roadrunner
+
+# 4. When updating existing skills, bump version
+/contributor:version roadrunner
 ```
 
 Or just ask Claude: *"Help me create a new FTC skill for RoadRunner"* - the skill-builder skill activates automatically and guides you through the process.
+
+See [VERSIONING.md](VERSIONING.md) for version bump guidelines.
 
 ### Manual Contribution
 
