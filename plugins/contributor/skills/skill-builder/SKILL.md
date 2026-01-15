@@ -52,9 +52,15 @@ This skill teaches you how to create high-quality skills for the FTC Claude Skil
 |---------|---------|
 | `/contributor:create-skill <name> [category]` | Create new plugin from template |
 | `/contributor:validate-skill <name>` | Validate plugin structure before PR |
-| `/contributor:version <name>` | Bump version with guided changelog |
+| ~~`/contributor:version <name>`~~ | ⚠️ **Deprecated** - versions now automated |
 
 ### Version Bump Command
+
+> **⚠️ DEPRECATED:** This command is deprecated and will be removed in v2.0.0.
+>
+> **New Process:** Version bumps are now automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead.
+>
+> See [RELEASES.md](../../../RELEASES.md) for the new automated release workflow.
 
 Use `/contributor:version` to update plugin versions across all required locations:
 

@@ -6,6 +6,12 @@ allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
 
 # Version Bump Command
 
+> **⚠️ DEPRECATED:** This command is deprecated and will be removed in v2.0.0.
+>
+> **New Process:** Version bumps are now automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead of manually bumping versions.
+>
+> See [RELEASES.md](../../../RELEASES.md) for the new automated release workflow.
+
 Interactively bumps a plugin's version across all required locations and creates a changelog entry.
 
 ## Usage
