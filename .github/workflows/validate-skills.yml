@@ -122,9 +122,9 @@ jobs:
               if [ -d "$skill_dir" ]; then
                 folder_name=$(basename "$skill_dir")
 
-                # Extract name from SKILL.md frontmatter
+                # Extract name from SKILL.md frontmatter (only first block)
                 if [ -f "$skill_dir/SKILL.md" ]; then
-                  yaml_name=$(sed -n '/^---$/,/^---$/p' "$skill_dir/SKILL.md" | grep "^name:" | sed 's/name: *//')
+                  yaml_name=$(awk 'NR==1 && /^---$/{found=1; next} found && /^---$/{exit} found && /^name:/{gsub(/^name: */, ""); print; exit}' "$skill_dir/SKILL.md")
 
                   if [ "$folder_name" != "$yaml_name" ]; then
                     echo "❌ Name mismatch in $plugin_name: folder='$folder_name' vs SKILL.md name='$yaml_name'"

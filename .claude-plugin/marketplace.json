@@ -64,6 +64,12 @@
       "description": "FTC development commands - build, deploy, connect, debug, and control OpModes",
       "source": "./plugins/robot-dev",
       "skills": ["./skills/robot-dev"]
+    },
+    {
+      "name": "ftc-dashboard",
+      "description": "FTC Dashboard - telemetry visualization, @Config variables, field overlay drawing, camera streaming",
+      "source": "./plugins/ftc-dashboard",
+      "skills": ["./skills/ftc-dashboard"]
     }
   ]
 }
