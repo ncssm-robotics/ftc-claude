@@ -12,7 +12,7 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 |-------|----------|-------------|
 | **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
 | **pedro-pathing** | Library | Pedro Pathing autonomous library - Bezier curves, path building |
-| **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, localization |
+| **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, coordinate conversion |
 | **pinpoint** | Hardware | GoBilda Pinpoint odometry - setup, tuning, LED status codes |
 | **limelight** | Hardware | Limelight 3A vision - AprilTags, MegaTag2, color tracking |
 | **nextftc** | Framework | NextFTC command-based framework - commands, subsystems, bindings |

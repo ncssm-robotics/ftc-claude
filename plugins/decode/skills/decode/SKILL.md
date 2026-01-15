@@ -76,21 +76,21 @@ Based on game strategy:
 
 ## Coordinate Conversion Scripts
 
-Use `uv run` to execute conversion scripts:
+Use `python` to execute conversion scripts (no external dependencies required):
 
 ```bash
 # FTC (meters) to Pedro (inches)
-uv run scripts/convert.py ftc-to-pedro 0 0 90
+python scripts/convert.py ftc-to-pedro 0 0 90
 
 # Tile coordinates to Pedro
-uv run scripts/convert.py tile-to-pedro 3 3
-uv run scripts/convert.py tile-center 2 4
+python scripts/convert.py tile-to-pedro 3 3
+python scripts/convert.py tile-center 2 4
 
 # Mirror red alliance pose for blue
-uv run scripts/convert.py mirror-blue 7 6.75 0
+python scripts/convert.py mirror-blue 7 6.75 0
 
 # Show all coordinate systems for a point
-uv run scripts/convert.py all 72 72
+python scripts/convert.py all 72 72
 ```
 
 ## Reference Documentation

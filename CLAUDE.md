@@ -28,6 +28,12 @@ When reviewing PRs, check for these common issues:
 - [ ] Version bumped in `plugin.json` if functionality changed
 - [ ] Description still accurate after changes
 
+### Script Simplicity
+- [ ] If SKILL.md uses `uv run scripts/*.py`, check if script only needs Python stdlib
+- [ ] Scripts with only stdlib imports (sys, math, json, etc.) should use `python` not `uv run`
+- [ ] Reserve `uv run` for scripts that actually need external packages (numpy, requests, pandas, etc.)
+- [ ] Rationale: Simpler and more accessible - everyone has Python, not everyone has uv
+
 ### Documentation
 - [ ] README.md skill table matches marketplace.json
 - [ ] Repository structure section is current
