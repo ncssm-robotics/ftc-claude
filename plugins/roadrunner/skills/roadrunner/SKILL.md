@@ -336,6 +336,31 @@ RoadRunner 1.0 is **not backwards compatible**. Key changes:
 
 Remove all 0.5.x references before upgrading.
 
+## Coordinate Systems
+
+RoadRunner uses **center-origin** coordinates (inches, radians):
+- Origin at field center (0, 0)
+- X range: -72" to +72"
+- Y range: -72" to +72"
+- Heading: 0 rad = facing right (+X), CCW positive
+
+This differs from Pedro Pathing which uses corner-origin.
+
+### Converting Between Systems
+
+```bash
+# Convert RoadRunner to Pedro coordinates
+uv run scripts/convert.py roadrunner-to-pedro 12 -62 1.57
+
+# Convert from Limelight/FTC to RoadRunner
+uv run scripts/convert.py ftc-to-roadrunner 0.3 -1.5 90
+
+# Mirror red alliance pose for blue
+uv run scripts/convert.py mirror-blue 12 -62 1.57
+```
+
+See [COORDINATES.md](COORDINATES.md) for full documentation on coordinate systems and conversion code.
+
 ## External Resources
 
 - [RoadRunner 1.0 Documentation](https://rr.brott.dev/docs/v1-0/)
