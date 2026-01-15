@@ -58,7 +58,7 @@ update_skill_md() {
         BEGIN { in_metadata=0; version_updated=0 }
 
         # Detect metadata section in frontmatter
-        /^metadata:/ { in_metadata=1 }
+        /^metadata:/ { in_metadata=1; print; next }
 
         # If in metadata and line starts with version:, update it
         in_metadata && /^  version:/ {
@@ -67,14 +67,14 @@ update_skill_md() {
             next
         }
 
-        # Exit metadata section when indentation returns to base level
-        in_metadata && /^[^ ]/ && !/^  / { in_metadata=0 }
+        # Exit metadata section when we hit a non-indented line that is not part of metadata
+        in_metadata && /^[a-z]/ { in_metadata=0 }
 
         # Print all other lines as-is
         { print }
 
         END {
-            if (!version_updated) {
+            if (version_updated == 0) {
                 print "Warning: version field not found in metadata section" > "/dev/stderr"
             }
         }
@@ -182,8 +182,9 @@ verify_version_consistency() {
             BEGIN { in_metadata=0 }
             /^metadata:/ { in_metadata=1; next }
             in_metadata && /^  version:/ {
-                match($0, /"([^"]+)"/, arr)
-                print arr[1]
+                gsub(/^  version: *"?/, "")
+                gsub(/"$/, "")
+                print
                 exit
             }
             in_metadata && /^[^ ]/ { exit }
