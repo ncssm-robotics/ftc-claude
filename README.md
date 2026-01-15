@@ -12,10 +12,13 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 |-------|----------|-------------|
 | **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
 | **pedro-pathing** | Library | Pedro Pathing autonomous library - Bezier curves, path building |
+| **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, localization |
 | **pinpoint** | Hardware | GoBilda Pinpoint odometry - setup, tuning, LED status codes |
 | **limelight** | Hardware | Limelight 3A vision - AprilTags, MegaTag2, color tracking |
 | **nextftc** | Framework | NextFTC command-based framework - commands, subsystems, bindings |
 | **panels** | Tools | Panels dashboard - telemetry graphs, live configuration |
+| **ftc-dashboard** | Tools | FTC Dashboard - telemetry visualization, @Config variables, field overlay |
+| **robot-dev** | Tools | Development commands - /build, /deploy, /connect, /log, OpMode control |
 
 ### Contributor Tools
 
@@ -97,10 +100,15 @@ ftc-claude/
 │   │   ├── plugin.json
 │   │   └── skills/decode/
 │   ├── pedro-pathing/
+│   ├── roadrunner/
 │   ├── pinpoint/
 │   ├── limelight/
 │   ├── nextftc/
 │   ├── panels/
+│   ├── ftc-dashboard/
+│   ├── robot-dev/           # Build, deploy, OpMode commands
+│   │   ├── commands/
+│   │   └── scripts/
 │   └── contributor/         # Skill-builder tools
 │       ├── skills/skill-builder/
 │       └── commands/
@@ -140,7 +148,6 @@ Or just ask Claude: *"Help me create a new FTC skill for RoadRunner"* - the skil
 
 ### Skill Ideas We'd Love to See
 
-- **roadrunner** - RoadRunner path planning library
 - **ftclib** - FTCLib library patterns
 - **rev-hub** - REV Control Hub configuration
 - **spark-mini** - REV Spark Mini motor controller
