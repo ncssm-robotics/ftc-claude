@@ -58,6 +58,12 @@
       "description": "RoadRunner path planning library - trajectories, motion profiles, localization, autonomous routines",
       "source": "./plugins/roadrunner",
       "skills": ["./skills/roadrunner"]
+    },
+    {
+      "name": "robot-dev",
+      "description": "FTC development commands - build, deploy, connect, debug, and control OpModes",
+      "source": "./plugins/robot-dev",
+      "skills": ["./skills/robot-dev"]
     }
   ]
 }
