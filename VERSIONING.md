@@ -86,73 +86,66 @@ The CI workflow validates that these versions match.
 
 ## Version Bump Process
 
-### Automated (Recommended)
+**Important:** Version bumps are **fully automated** during the release process. Contributors do not manually bump version numbers.
 
-Use the `/contributor:version` command for guided version bumping:
+### Contributor Workflow
 
-```bash
-/contributor:version decode
-```
-
-This command will:
-1. Ask what type of change (MAJOR/MINOR/PATCH)
-2. Ask what categories of changes (Added/Changed/Fixed/Removed)
-3. Update version in all three locations automatically
-4. Create a changelog entry with today's date
-
-### Manual Process
-
-If you prefer to update versions manually:
-
-#### 1. Determine Version Type
-
-Review your changes against the criteria above:
-- Breaking change? → MAJOR bump
-- New feature? → MINOR bump
-- Bug fix only? → PATCH bump
-
-#### 2. Update All Three Version Locations
-
-```bash
-# In plugin.json
-"version": "1.2.0"  →  "version": "1.3.0"
-
-# In SKILL.md frontmatter
-metadata:
-  version: "1.2.0"  →  version: "1.3.0"
-
-# In marketplace.json
-"version": "1.2.0"  →  "version": "1.3.0"
-```
-
-#### 3. Update Changelog
-
-Add an entry to `CHANGELOG.md` in the plugin directory:
+When making changes to a plugin, add your changes to the `## [Unreleased]` section of `CHANGELOG.md`:
 
 ```markdown
-## [1.3.0] - 2025-01-15
+## [Unreleased]
 
 ### Added
 - New teleop strategies section with defensive positioning
 
-### Changed
-- Updated specimen scoring points to match Game Manual 2.1
+### Fixed
+- Corrected ascent zone coordinates
 ```
 
-#### 4. Commit with Version Tag
+### Changelog Categories
 
-Use conventional commit format:
+Use these categories to document your changes. The release automation will use these to determine the version bump type:
 
-```bash
-# PATCH
-git commit -m "fix(decode): correct ascent zone coordinates"
+| Category | Version Impact | Use When |
+|----------|----------------|----------|
+| `### Added` | MINOR | New features, sections, examples |
+| `### Changed` | MAJOR | Behavior changes (breaking) |
+| `### Fixed` | PATCH | Bug fixes, corrections |
+| `### Removed` | MAJOR | Deleted features (breaking) |
+| `### Deprecated` | MINOR | Marking features for future removal |
+| `### Security` | PATCH | Security-related fixes |
 
-# MINOR
-git commit -m "feat(decode): add teleop strategies section"
+### How Version Calculation Works
 
-# MAJOR
-git commit -m "feat(decode)!: restructure coordinate system to field-centric"
+During the release process, an automated script:
+
+1. **Analyzes** each plugin's `## [Unreleased]` section
+2. **Determines** version bump type based on categories present:
+   - If `### Removed` OR `### Changed` present → **MAJOR** bump
+   - Else if `### Added` OR `### Deprecated` present → **MINOR** bump
+   - Else if `### Fixed` OR `### Security` present → **PATCH** bump
+3. **Applies highest severity** if multiple categories exist
+4. **Updates** version in all three locations automatically
+5. **Moves** `## [Unreleased]` content → `## [X.Y.Z] - YYYY-MM-DD`
+6. **Creates** fresh `## [Unreleased]` section for next cycle
+
+### Example: Multiple Categories
+
+```markdown
+## [Unreleased]
+
+### Added
+- New section on autonomous paths
+
+### Removed
+- Deprecated specimen scoring (use new API)
 ```
+
+**Result:** MAJOR bump (because `### Removed` is present, even though `### Added` is also there)
+
+### For Maintainers
+
+See [RELEASES.md](RELEASES.md) for the complete release process documentation.
 
 ## Pre-release Versions
 

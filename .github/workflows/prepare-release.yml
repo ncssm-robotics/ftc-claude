@@ -1,0 +1,74 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview changes without creating PR'
+        required: false
+        default: false
+        type: boolean
+      target_branch:
+        description: 'Target branch for release (default: main)'
+        required: false
+        default: 'main'
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare:
+    name: Prepare Release from Develop
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0  # Need full history for git operations
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        run: |
+          # Ensure jq is installed (should be pre-installed on ubuntu-latest)
+          which jq || sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Run release preparation script
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          TARGET_BRANCH: ${{ inputs.target_branch }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          .github/scripts/prepare-release.sh
+
+      - name: Summary
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "### Dry Run Complete 🎯" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This was a preview. No changes were made." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To create an actual release:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Uncheck the 'dry_run' option" >> $GITHUB_STEP_SUMMARY
+          echo "2. Run the workflow again" >> $GITHUB_STEP_SUMMARY
+
+      - name: Success summary
+        if: ${{ !inputs.dry_run }}
+        run: |
+          echo "### Release PR Created! 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A release PR has been created automatically." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next steps:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review the PR" >> $GITHUB_STEP_SUMMARY
+          echo "2. Check that version bumps are correct" >> $GITHUB_STEP_SUMMARY
+          echo "3. Validate release notes" >> $GITHUB_STEP_SUMMARY
+          echo "4. Merge when ready" >> $GITHUB_STEP_SUMMARY

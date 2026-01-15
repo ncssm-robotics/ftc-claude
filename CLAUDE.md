@@ -27,16 +27,18 @@ When reviewing PRs, check for these common issues:
 - [ ] Has Anti-Patterns section
 
 ### Skill Updates
-- [ ] Version bumped appropriately (see [VERSIONING.md](VERSIONING.md) for guidelines)
-  - MAJOR bump: Breaking changes (removed features, changed formats, renamed commands)
-  - MINOR bump: New features or significant additions (backward compatible)
-  - PATCH bump: Bug fixes, typos, clarifications
-- [ ] Version synchronized in all three locations:
-  - `plugin.json` version field
-  - `SKILL.md` frontmatter `metadata.version`
-  - `.claude-plugin/marketplace.json` version field
-- [ ] `CHANGELOG.md` updated with new version entry
+- [ ] Changes added to `## [Unreleased]` section in `CHANGELOG.md`
+- [ ] Correct changelog category used:
+  - `### Added` - New features (→ MINOR bump)
+  - `### Changed` - Behavior changes/breaking (→ MAJOR bump)
+  - `### Fixed` - Bug fixes (→ PATCH bump)
+  - `### Removed` - Deleted features/breaking (→ MAJOR bump)
+  - `### Deprecated` - Future removal warning (→ MINOR bump)
+  - `### Security` - Security fixes (→ PATCH bump)
+- [ ] Change descriptions are clear and user-facing (they appear in release notes)
+- [ ] **NOT** manually bumping version numbers (automated during release)
 - [ ] Description still accurate after changes
+- [ ] PR targets `develop` branch (not `main`)
 
 ### Script Simplicity
 - [ ] If SKILL.md uses `uv run scripts/*.py`, check if script only needs Python stdlib
@@ -44,13 +46,15 @@ When reviewing PRs, check for these common issues:
 - [ ] Reserve `uv run` for scripts that actually need external packages (numpy, requests, pandas, etc.)
 - [ ] Rationale: Simpler and more accessible - everyone has Python, not everyone has uv
 
-### Versioning
-- [ ] Version format is valid semantic version (X.Y.Z or X.Y.Z-prerelease)
-- [ ] Version change appropriate for the type of changes made
-- [ ] CHANGELOG.md entry exists for new version with:
-  - Added, Changed, Deprecated, Removed, Fixed, Security sections as needed
-  - Date in YYYY-MM-DD format
-- [ ] No version skipping (e.g., 1.0.0 -> 1.5.0 is invalid)
+### Versioning & Changelog
+- [ ] PR does **NOT** include manual version bumps (automated during release)
+- [ ] Changes documented in `## [Unreleased]` section (not versioned sections)
+- [ ] Changelog categories match the actual changes:
+  - Breaking changes use `### Changed` or `### Removed`
+  - New features use `### Added`
+  - Bug fixes use `### Fixed`
+- [ ] No empty or generic changelog entries ("various improvements" is not helpful)
+- [ ] CHANGELOG.md format is valid (proper markdown headers)
 
 ### Documentation Sync
 - [ ] README.md skill table matches marketplace.json
@@ -89,6 +93,7 @@ The robot-dev plugin provides development commands:
 Contributors should use commands from the contributor plugin to ensure consistency:
 - `/contributor:create-skill` - Create new plugin from template
 - `/contributor:validate-skill` - Validate plugin structure before PR
-- `/contributor:version` - Bump version with guided changelog entry
 
-See [VERSIONING.md](VERSIONING.md) for version bump guidelines and [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guide.
+**Version Management:** Version bumps are automated during the release process. Contributors only add changes to `## [Unreleased]` sections in `CHANGELOG.md`. See [RELEASES.md](RELEASES.md) for the release process (maintainers only).
+
+See [VERSIONING.md](VERSIONING.md) for changelog category guidelines and [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guide.
