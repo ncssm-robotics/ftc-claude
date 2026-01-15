@@ -47,6 +47,10 @@ jobs:
             - For new skills: check SKILL.md has proper frontmatter (name, description with WHAT and WHEN triggers)
             - Verify plugin.json name matches the folder name
             - Check that new skills are added to marketplace.json
+            - If SKILL.md shows `uv run scripts/*.py`, check if the script only uses Python stdlib (sys, math, json, etc.)
+              - If script has NO external dependencies (no numpy, requests, pandas, etc.), suggest using `python scripts/*.py` instead
+              - Rationale: Simpler and more accessible - all systems have Python, not everyone has uv installed
+              - uv should only be recommended when scripts actually need external packages
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 

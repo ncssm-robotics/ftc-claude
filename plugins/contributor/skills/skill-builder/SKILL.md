@@ -205,8 +205,8 @@ allowed-tools: Read, Grep, Glob
 # Can create/edit files
 allowed-tools: Read, Write, Edit, Glob, Grep
 
-# Can run specific commands
-allowed-tools: Read, Write, Edit, Bash(./gradlew:*), Bash(uv:*)
+# Can run specific commands (use uv only when scripts need external deps)
+allowed-tools: Read, Write, Edit, Bash(./gradlew:*), Bash(python:*)
 
 # Full access (omit field entirely)
 # allowed-tools: (not specified)
@@ -301,13 +301,43 @@ Scripts execute without loading content into context (zero token cost):
 
 Convert FTC coordinates to Pedro Pathing:
 \`\`\`bash
-uv run scripts/convert.py ftc-to-pedro 1.5 2.0 90
+python scripts/convert.py ftc-to-pedro 1.5 2.0 90
 \`\`\`
 
 Mirror red alliance pose for blue:
 \`\`\`bash
-uv run scripts/convert.py mirror-blue 7 6.75 0
+python scripts/convert.py mirror-blue 7 6.75 0
 \`\`\`
+```
+
+### Choosing Between `python` and `uv run`
+
+**Use `python` when:**
+- Script has NO external dependencies (only uses Python stdlib)
+- Maximum accessibility - all systems have Python
+- Example: Math conversions, file parsing with `sys`/`json`/`math`
+
+**Use `uv run` when:**
+- Script requires external packages (numpy, requests, etc.)
+- Need reproducible dependency versions
+- Want isolated environment to avoid conflicts
+- Example: Data analysis with pandas, API calls with requests
+
+```python
+# Simple script with no deps - use `python`
+import sys
+import math
+
+def convert_coords(x, y):
+    return x * 25.4, y * 25.4  # inches to mm
+
+# Complex script with deps - use `uv run`
+import numpy as np
+import requests
+
+def fetch_and_analyze(url):
+    data = requests.get(url).json()
+    return np.mean(data['values'])
 ```
 
 Make scripts executable:

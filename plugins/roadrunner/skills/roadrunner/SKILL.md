@@ -351,13 +351,13 @@ This differs from Pedro Pathing which uses corner-origin.
 
 ```bash
 # Convert RoadRunner to Pedro coordinates
-uv run scripts/convert.py roadrunner-to-pedro 12 -62 1.57
+python scripts/convert.py roadrunner-to-pedro 12 -62 1.57
 
 # Convert from Limelight/FTC to RoadRunner
-uv run scripts/convert.py ftc-to-roadrunner 0.3 -1.5 90
+python scripts/convert.py ftc-to-roadrunner 0.3 -1.5 90
 
 # Mirror red alliance pose for blue
-uv run scripts/convert.py mirror-blue 12 -62 1.57
+python scripts/convert.py mirror-blue 12 -62 1.57
 ```
 
 See [COORDINATES.md](COORDINATES.md) for full documentation on coordinate systems and conversion code.
