@@ -13,6 +13,18 @@ metadata:
 
 FTCLib is a comprehensive Java library for FTC robotics providing a command-based framework, enhanced gamepad input, Pure Pursuit path following, and vision pipelines. It brings FRC-style architecture to FTC development.
 
+## Maintenance Warning
+
+**FTCLib is no longer actively maintained.** While many teams still use it due to legacy codebases, be aware that:
+
+- There are known bugs that will not be fixed
+- New features and improvements are not being developed
+- Compatibility with future FTC SDK versions is not guaranteed
+
+**Recommendation:** If you're starting a new project or able to migrate, consider using [NextFTC](https://nextftc.dev) instead, which is actively maintained and offers similar command-based functionality.
+
+**Encountering issues?** Check the [FTCLib GitHub Issues](https://github.com/FTCLib/FTCLib/issues) to see if your problem is a known bug before spending time debugging.
+
 ## Quick Start
 
 ### Dependencies

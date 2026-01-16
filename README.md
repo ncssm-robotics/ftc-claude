@@ -11,6 +11,7 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 | Skill | Category | Description |
 |-------|----------|-------------|
 | **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
+| **ftclib** | Framework | FTCLib command-based framework - commands, subsystems, pure pursuit, vision |
 | **pedro-pathing** | Library | Pedro Pathing autonomous library - Bezier curves, path building |
 | **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, coordinate conversion |
 | **pinpoint** | Hardware | GoBilda Pinpoint odometry - setup, tuning, LED status codes |
@@ -99,6 +100,7 @@ ftc-claude/
 │   ├── decode/
 │   │   ├── plugin.json
 │   │   └── skills/decode/
+│   ├── ftclib/
 │   ├── pedro-pathing/
 │   ├── roadrunner/
 │   ├── pinpoint/
@@ -148,7 +150,6 @@ Or just ask Claude: *"Help me create a new FTC skill for RoadRunner"* - the skil
 
 ### Skill Ideas We'd Love to See
 
-- **ftclib** - FTCLib library patterns
 - **rev-hub** - REV Control Hub configuration
 - **spark-mini** - REV Spark Mini motor controller
 - **photonvision** - PhotonVision integration

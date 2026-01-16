@@ -73,6 +73,7 @@
     },
     {
       "name": "ftclib",
+      "version": "1.0.0",
       "description": "FTCLib library - command-based framework, pure pursuit, vision pipelines, gamepad extensions",
       "source": "./plugins/ftclib",
       "skills": ["./skills/ftclib"]
