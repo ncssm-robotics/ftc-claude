@@ -197,8 +197,10 @@ jobs:
 
                   if [ -n "$skill_version" ]; then
                     if [ "$plugin_version" != "$skill_version" ]; then
-                      echo "❌ Version mismatch in $plugin_name: plugin.json='$plugin_version' vs SKILL.md='$skill_version'"
-                      errors=$((errors + 1))
+                      # Warning only - release script handles version consistency
+                      # New skills start at 1.0.0, versions are bumped atomically during release
+                      echo "  ⚠ Version differs: plugin.json='$plugin_version' vs SKILL.md='$skill_version' (release script will sync)"
+                      warnings=$((warnings + 1))
                     else
                       echo "  ✓ SKILL.md version matches: $skill_version"
                     fi
