@@ -52,8 +52,21 @@ This skill teaches you how to create high-quality skills for the FTC Claude Skil
 |---------|---------|
 | `/contributor:create-skill <name> [category]` | Create new plugin from template |
 | `/contributor:validate-skill <name>` | Validate plugin structure before PR |
+| `/contributor:update-skill <name>` | Generate changelog entries from git diff |
+| `/contributor:review <name> [--type]` | Run local code review checks |
 
-> **Note:** Version bumps are automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead. See [RELEASES.md](../../../RELEASES.md) for details.
+## Review Skills (Auto-Activate)
+
+These skills auto-activate when relevant and define the checks used by `/contributor:review`:
+
+| Skill | Triggers On |
+|-------|-------------|
+| `contributor:code-review` | PR reviews, skill validation, marketplace compliance |
+| `contributor:security-review` | Security audits, credential checks, file safety |
+| `contributor:youth-safety-review` | Content review, code sharing with students |
+| `contributor:versioning` | Version changes (guardrail against manual bumps) |
+
+> **Note:** Version bumps are automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead. The `contributor:versioning` skill will remind you of this if you try to manually change versions. See [RELEASES.md](../../../RELEASES.md) for details.
 
 ## Skill Anatomy
 

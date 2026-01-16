@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `/contributor:update-skill` command for generating changelog entries from git diff
+- `/contributor:review` command for running local code review checks (same as PR bot)
+- `contributor:code-review` skill for structure and content quality checks
+- `contributor:security-review` skill with FTC IP whitelist (192.168.43.1, 192.168.49.1)
+- `contributor:youth-safety-review` skill for content appropriateness checks
+- `contributor:versioning` skill as guardrail against manual version bumps
+
 ## [2.0.0] - 2026-01-16
 
 ### Removed

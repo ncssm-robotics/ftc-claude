@@ -68,10 +68,14 @@
     {
       "name": "contributor",
       "version": "2.0.0",
-      "description": "Contributor tools - /create-skill and /validate-skill commands for managing FTC plugins",
+      "description": "Contributor tools - /create-skill, /validate-skill, /update-skill, /review commands and review skills",
       "source": "./plugins/contributor",
       "skills": [
-        "./skills/skill-builder"
+        "./skills/skill-builder",
+        "./skills/code-review",
+        "./skills/security-review",
+        "./skills/youth-safety-review",
+        "./skills/versioning"
       ]
     },
     {

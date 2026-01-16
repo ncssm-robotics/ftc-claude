@@ -1,7 +1,7 @@
 {
   "name": "contributor",
   "version": "2.0.0",
-  "description": "Contributor tools - /create-skill, /validate-skill, and /version commands for managing FTC plugins",
+  "description": "Contributor tools - /create-skill, /validate-skill, /update-skill, /review commands and review skills",
   "author": {
     "name": "NCSSM Robotics",
     "url": "https://github.com/ncssm-robotics"

@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 #
 # Validate an FTC skill plugin
-# Usage: ./validate-skill.sh <skill-name>
+# Usage: ./validate-skill.sh <plugin-name>
 #
+# Validates plugin structure and all skills listed in marketplace.json
 
 set -e
 
-SKILL_NAME="$1"
+PLUGIN_NAME="$1"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-PLUGIN_DIR="$REPO_ROOT/plugins/$SKILL_NAME"
+PLUGIN_DIR="$REPO_ROOT/plugins/$PLUGIN_NAME"
+MARKETPLACE="$REPO_ROOT/.claude-plugin/marketplace.json"
 
 # Colors
 RED='\033[0;31m'
@@ -18,12 +20,14 @@ NC='\033[0m'
 
 errors=0
 warnings=0
+total_checks=0
 
 check() {
     local status=$1
     local message=$2
     local level=${3:-error}
 
+    total_checks=$((total_checks + 1))
     if [ "$status" = "pass" ]; then
         echo -e "  ${GREEN}✓${NC} $message"
     elif [ "$level" = "warning" ]; then
@@ -35,12 +39,12 @@ check() {
     fi
 }
 
-if [ -z "$SKILL_NAME" ]; then
-    echo "Usage: ./validate-skill.sh <skill-name>"
+if [ -z "$PLUGIN_NAME" ]; then
+    echo "Usage: ./validate-skill.sh <plugin-name>"
     exit 1
 fi
 
-echo "Validating skill: $SKILL_NAME"
+echo "Validating plugin: $PLUGIN_NAME"
 echo ""
 
 # Structure checks
@@ -48,7 +52,7 @@ echo "Structure:"
 if [ -d "$PLUGIN_DIR" ]; then
     check "pass" "Plugin directory exists"
 else
-    check "fail" "Plugin directory missing: plugins/$SKILL_NAME"
+    check "fail" "Plugin directory missing: plugins/$PLUGIN_NAME"
     exit 1
 fi
 
@@ -58,16 +62,10 @@ else
     check "fail" "plugin.json missing"
 fi
 
-if [ -d "$PLUGIN_DIR/skills/$SKILL_NAME" ]; then
-    check "pass" "skills/$SKILL_NAME directory exists"
+if [ -f "$PLUGIN_DIR/CHANGELOG.md" ]; then
+    check "pass" "CHANGELOG.md exists"
 else
-    check "fail" "skills/$SKILL_NAME directory missing"
-fi
-
-if [ -f "$PLUGIN_DIR/skills/$SKILL_NAME/SKILL.md" ]; then
-    check "pass" "SKILL.md exists"
-else
-    check "fail" "SKILL.md missing"
+    check "fail" "CHANGELOG.md missing" "warning"
 fi
 
 echo ""
@@ -79,10 +77,10 @@ if [ -f "$PLUGIN_DIR/plugin.json" ]; then
         check "pass" "Valid JSON"
 
         json_name=$(jq -r '.name' "$PLUGIN_DIR/plugin.json")
-        if [ "$json_name" = "$SKILL_NAME" ]; then
+        if [ "$json_name" = "$PLUGIN_NAME" ]; then
             check "pass" "Name matches directory"
         else
-            check "fail" "Name mismatch: '$json_name' vs '$SKILL_NAME'"
+            check "fail" "Name mismatch: '$json_name' vs '$PLUGIN_NAME'"
         fi
 
         if jq -e '.description | length > 0' "$PLUGIN_DIR/plugin.json" > /dev/null 2>&1; then
@@ -91,10 +89,18 @@ if [ -f "$PLUGIN_DIR/plugin.json" ]; then
             check "fail" "Missing description"
         fi
 
-        if jq -e '.tags | contains(["ftc"])' "$PLUGIN_DIR/plugin.json" > /dev/null 2>&1; then
-            check "pass" "Has 'ftc' tag"
+        # Check for keywords array with 'ftc' (not tags)
+        if jq -e '.keywords | contains(["ftc"])' "$PLUGIN_DIR/plugin.json" > /dev/null 2>&1; then
+            check "pass" "Has 'ftc' keyword"
         else
-            check "fail" "Missing 'ftc' tag" "warning"
+            check "fail" "Missing 'ftc' in keywords array" "warning"
+        fi
+
+        # Check author is object not string
+        if jq -e '.author | type == "object"' "$PLUGIN_DIR/plugin.json" > /dev/null 2>&1; then
+            check "pass" "Author is object (not string)"
+        else
+            check "fail" "Author must be object, not string"
         fi
     else
         check "fail" "Invalid JSON"
@@ -103,98 +109,103 @@ fi
 
 echo ""
 
-# SKILL.md checks
-echo "SKILL.md:"
-SKILL_MD="$PLUGIN_DIR/skills/$SKILL_NAME/SKILL.md"
-if [ -f "$SKILL_MD" ]; then
-    if head -1 "$SKILL_MD" | grep -q "^---$"; then
-        check "pass" "Has YAML frontmatter"
-    else
-        check "fail" "Missing YAML frontmatter"
-    fi
-
-    if grep -q "^name:" "$SKILL_MD"; then
-        yaml_name=$(sed -n '/^---$/,/^---$/p' "$SKILL_MD" | grep "^name:" | sed 's/name: *//')
-        if [ "$yaml_name" = "$SKILL_NAME" ]; then
-            check "pass" "Frontmatter name matches"
-        else
-            check "fail" "Frontmatter name mismatch: '$yaml_name'"
-        fi
-    else
-        check "fail" "Missing 'name' in frontmatter"
-    fi
-
-    if grep -q "^description:" "$SKILL_MD"; then
-        check "pass" "Has description field"
-
-        if grep -i "use when" "$SKILL_MD" > /dev/null; then
-            check "pass" "Description includes WHEN triggers"
-        else
-            check "fail" "Description missing WHEN triggers" "warning"
-        fi
-    else
-        check "fail" "Missing 'description' in frontmatter"
-    fi
-
-    line_count=$(wc -l < "$SKILL_MD" | tr -d ' ')
-    if [ "$line_count" -lt 500 ]; then
-        check "pass" "Under 500 lines ($line_count lines)"
-    else
-        check "fail" "Over 500 lines ($line_count lines)" "warning"
-    fi
-fi
-
-echo ""
-
-# Content checks
-echo "Content:"
-if [ -f "$SKILL_MD" ]; then
-    if grep -qi "quick start\|## quick" "$SKILL_MD"; then
-        check "pass" "Has Quick Start section"
-    else
-        check "fail" "Missing Quick Start section" "warning"
-    fi
-
-    if grep -q '```java\|```kotlin' "$SKILL_MD"; then
-        check "pass" "Has code examples"
-    else
-        check "fail" "Missing code examples" "warning"
-    fi
-
-    if grep -qi "anti-pattern\|don't\|avoid" "$SKILL_MD"; then
-        check "pass" "Has Anti-Patterns section"
-    else
-        check "fail" "Missing Anti-Patterns section" "warning"
-    fi
-
-    if grep -q '\[TODO:' "$SKILL_MD"; then
-        check "fail" "Contains [TODO: ...] placeholders" "warning"
-    else
-        check "pass" "No TODO placeholders"
-    fi
-fi
-
-echo ""
-
-# marketplace.json check
-echo "marketplace.json:"
-MARKETPLACE="$REPO_ROOT/.claude-plugin/marketplace.json"
+# Get skills from marketplace.json
+echo "Skills (from marketplace.json):"
 if [ -f "$MARKETPLACE" ]; then
-    if jq -e ".plugins[] | select(.name == \"$SKILL_NAME\")" "$MARKETPLACE" > /dev/null 2>&1; then
-        check "pass" "Skill is registered in marketplace"
+    # Get the skills array for this plugin
+    SKILLS_JSON=$(jq -r ".plugins[] | select(.name == \"$PLUGIN_NAME\") | .skills // []" "$MARKETPLACE" 2>/dev/null)
+
+    if [ -z "$SKILLS_JSON" ] || [ "$SKILLS_JSON" = "[]" ] || [ "$SKILLS_JSON" = "null" ]; then
+        check "fail" "Plugin not found in marketplace.json or has no skills"
     else
-        check "fail" "Skill not in marketplace.json"
+        # Convert JSON array to bash array
+        SKILLS=($(echo "$SKILLS_JSON" | jq -r '.[]' | sed 's|^\./skills/||'))
+
+        echo "  Found ${#SKILLS[@]} skill(s): ${SKILLS[*]}"
+        echo ""
+
+        for SKILL in "${SKILLS[@]}"; do
+            SKILL_DIR="$PLUGIN_DIR/skills/$SKILL"
+            SKILL_MD="$SKILL_DIR/SKILL.md"
+
+            echo "  Skill: $SKILL"
+
+            if [ -d "$SKILL_DIR" ]; then
+                check "pass" "Directory exists"
+            else
+                check "fail" "Directory missing: skills/$SKILL"
+                continue
+            fi
+
+            if [ -f "$SKILL_MD" ]; then
+                check "pass" "SKILL.md exists"
+            else
+                check "fail" "SKILL.md missing"
+                continue
+            fi
+
+            # Frontmatter checks
+            if head -1 "$SKILL_MD" | grep -q "^---$"; then
+                check "pass" "Has YAML frontmatter"
+            else
+                check "fail" "Missing YAML frontmatter"
+            fi
+
+            if grep -q "^name:" "$SKILL_MD"; then
+                # Extract only the first name: from frontmatter (between first two ---)
+                yaml_name=$(awk '/^---$/{p++} p==1 && /^name:/{gsub(/^name: */, ""); print; exit}' "$SKILL_MD")
+                if [ "$yaml_name" = "$SKILL" ]; then
+                    check "pass" "Frontmatter name matches ($yaml_name)"
+                else
+                    check "fail" "Frontmatter name mismatch: '$yaml_name' vs '$SKILL'"
+                fi
+            else
+                check "fail" "Missing 'name' in frontmatter"
+            fi
+
+            if grep -q "^description:" "$SKILL_MD"; then
+                check "pass" "Has description field"
+            else
+                check "fail" "Missing 'description' in frontmatter"
+            fi
+
+            # Line count
+            line_count=$(wc -l < "$SKILL_MD" | tr -d ' ')
+            if [ "$line_count" -lt 500 ]; then
+                check "pass" "Under 500 lines ($line_count lines)"
+            else
+                check "fail" "Over 500 lines ($line_count lines)" "warning"
+            fi
+
+            echo ""
+        done
     fi
 else
     check "fail" "marketplace.json not found"
 fi
 
+# marketplace.json registration check
+echo "Marketplace:"
+if [ -f "$MARKETPLACE" ]; then
+    if jq -e ".plugins[] | select(.name == \"$PLUGIN_NAME\")" "$MARKETPLACE" > /dev/null 2>&1; then
+        check "pass" "Plugin is registered in marketplace"
+
+        # Check uses 'source' not 'path'
+        if jq -e ".plugins[] | select(.name == \"$PLUGIN_NAME\") | .source" "$MARKETPLACE" > /dev/null 2>&1; then
+            check "pass" "Uses 'source' field (not 'path')"
+        else
+            check "fail" "Missing 'source' field (using deprecated 'path'?)"
+        fi
+    else
+        check "fail" "Plugin not in marketplace.json"
+    fi
+fi
+
 echo ""
 
 # Summary
-total=$((errors + warnings))
-passed=$((12 - errors))
-echo "Summary: $passed/12 checks passed ($errors errors, $warnings warnings)"
+passed=$((total_checks - errors))
+echo "Summary: $passed/$total_checks checks passed ($errors errors, $warnings warnings)"
 
 if [ $errors -gt 0 ]; then
     echo -e "\n${RED}Validation failed. Fix errors before submitting.${NC}"
