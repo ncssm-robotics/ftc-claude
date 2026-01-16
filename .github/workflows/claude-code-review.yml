@@ -46,16 +46,7 @@ jobs:
           prompt: |
             /code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
 
-            Additional checks for this FTC skills marketplace repository:
-            - If files in plugins/ are added/modified, verify README.md skill table is updated
-            - If .claude-plugin/marketplace.json is modified, verify README.md matches
-            - For new skills: check SKILL.md has proper frontmatter (name, description with WHAT and WHEN triggers)
-            - Verify plugin.json name matches the folder name
-            - Check that new skills are added to marketplace.json
-            - If SKILL.md shows `uv run scripts/*.py`, check if the script only uses Python stdlib (sys, math, json, etc.)
-              - If script has NO external dependencies (no numpy, requests, pandas, etc.), suggest using `python scripts/*.py` instead
-              - Rationale: Simpler and more accessible - all systems have Python, not everyone has uv installed
-              - uv should only be recommended when scripts actually need external packages
+            Review this PR for compliance with CLAUDE.md guidelines. The CLAUDE.md file contains the complete code review checklist for this repository - use it as your primary reference for all review criteria.
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 
