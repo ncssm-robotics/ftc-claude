@@ -124,8 +124,8 @@ Version bumping is handled automatically by the release process based on changel
 The workflow continues:
 
 1. Review the changelog entries added
-2. Run `/contributor:validate-skill <skill-name>` to check everything
-3. Run `/contributor:review <skill-name>` for full code review
+2. Run `/validate-skill <skill-name>` to check everything
+3. Run `/review <skill-name>` for full code review
 4. Commit changes and submit PR to develop branch
 5. Release process will handle version bumps
 
