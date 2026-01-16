@@ -5,7 +5,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: ncssm-robotics
-  version: "1.2.0"
+  version: "2.0.0"
   category: tools
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(mkdir:*), Bash(chmod:*)
 ---
@@ -200,7 +200,7 @@ license: MIT                       # Recommended for FTC community
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: your-github-username     # Your GitHub username or team number
-  version: "1.0.0"                 # Semantic versioning
+  version: "2.0.0"
   category: hardware               # hardware | library | framework | tools | game
 allowed-tools: Read, Write, Edit   # Optional: restrict tool access
 ---
@@ -367,7 +367,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: your-github-username
-  version: "1.0.0"
+  version: "2.0.0"
   category: hardware | library | framework | tools | game
 ---
 
