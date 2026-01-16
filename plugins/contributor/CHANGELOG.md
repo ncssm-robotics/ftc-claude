@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Deprecated
-- `/contributor:version` command - version bumps are now automated during the release process. Contributors should add changes to `## [Unreleased]` sections in CHANGELOG.md instead. This command will be removed in v2.0.0.
+### Removed
+- `/contributor:version` command - version bumps are now automated during the release process. Contributors should add changes to `## [Unreleased]` sections in CHANGELOG.md instead. See [RELEASES.md](../../RELEASES.md).
 
 ## [1.2.0] - 2025-01-15
 

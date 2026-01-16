@@ -52,29 +52,8 @@ This skill teaches you how to create high-quality skills for the FTC Claude Skil
 |---------|---------|
 | `/contributor:create-skill <name> [category]` | Create new plugin from template |
 | `/contributor:validate-skill <name>` | Validate plugin structure before PR |
-| ~~`/contributor:version <name>`~~ | ⚠️ **Deprecated** - versions now automated |
 
-### Version Bump Command
-
-> **⚠️ DEPRECATED:** This command is deprecated and will be removed in v2.0.0.
->
-> **New Process:** Version bumps are now automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead.
->
-> See [RELEASES.md](../../../RELEASES.md) for the new automated release workflow.
-
-Use `/contributor:version` to update plugin versions across all required locations:
-
-```
-/contributor:version decode
-```
-
-This command will:
-1. Ask what type of change (MAJOR/MINOR/PATCH)
-2. Ask what categories of changes (Added/Changed/Fixed/Removed)
-3. Update version in `plugin.json`, `SKILL.md`, and `marketplace.json`
-4. Create changelog entry with today's date
-
-See [VERSIONING.md](../../../VERSIONING.md) for complete versioning guidelines.
+> **Note:** Version bumps are automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead. See [RELEASES.md](../../../RELEASES.md) for details.
 
 ## Skill Anatomy
 
