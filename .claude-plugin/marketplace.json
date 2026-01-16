@@ -88,9 +88,14 @@
       "version": "1.0.0",
       "description": "FTC Dashboard - telemetry visualization, @Config variables, field overlay drawing, camera streaming",
       "source": "./plugins/ftc-dashboard",
-      "skills": [
-        "./skills/ftc-dashboard"
-      ]
+      "skills": ["./skills/ftc-dashboard"]
+    },
+    {
+      "name": "ftclib",
+      "version": "1.0.0",
+      "description": "FTCLib library - command-based framework, pure pursuit, vision pipelines, gamepad extensions",
+      "source": "./plugins/ftclib",
+      "skills": ["./skills/ftclib"]
     }
   ]
 }
