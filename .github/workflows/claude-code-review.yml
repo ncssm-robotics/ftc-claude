@@ -11,11 +11,15 @@ on:
 
 jobs:
   claude-review:
+    # Only run on pull_request_target events OR issue_comments containing @claude-review
+    if: |
+      github.event_name == 'pull_request_target' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude-review'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write  # write needed to post review comments
-      issues: read
+      issues: write  # write needed to add reaction emoji to trigger comments
 
     steps:
       # Checkout the PR's code (not base branch) for review
@@ -36,7 +40,7 @@ jobs:
           # Allow manual trigger via @claude-review comment
           trigger_phrase: '@claude-review'
           # Allow trusted external contributors to trigger reviews
-          allowed_non_write_users: 'Prorickey,njfdev'
+          allowed_non_write_users: 'Prorickey,njfdev,Veratay'
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
