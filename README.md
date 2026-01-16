@@ -20,12 +20,6 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 | **ftc-dashboard** | Tools | FTC Dashboard - telemetry visualization, @Config variables, field overlay |
 | **robot-dev** | Tools | Development commands - /build, /deploy, /connect, /log, OpMode control |
 
-### Contributor Tools
-
-| Skill | Description |
-|-------|-------------|
-| **contributor** | Skill-builder tools for managing FTC skills - includes `/create-skill` and `/validate-skill` commands |
-
 ## Installation
 
 ### Option 1: Claude Code Plugin Marketplace (Recommended)
@@ -91,6 +85,11 @@ Once installed, skills activate automatically when relevant. Just ask Claude (or
 
 ```
 ftc-claude/
+├── .claude/                  # Contributor tooling (project-local)
+│   ├── commands/             # /create-skill, /validate-skill, /review
+│   ├── skills/               # skill-builder, code-review, versioning
+│   ├── scripts/              # Validation scripts
+│   └── hooks/                # Version guardrail hook
 ├── .claude-plugin/
 │   └── marketplace.json      # Plugin registry with versions
 ├── .github/
@@ -102,7 +101,7 @@ ftc-claude/
 │       ├── prepare-release.yml   # Automated version bumps
 │       ├── publish-release.yml   # GitHub release creation
 │       └── sync-develop.yml      # Branch synchronization
-├── plugins/
+├── plugins/                  # Skills for robot teams
 │   ├── decode/
 │   │   ├── plugin.json       # Plugin metadata with version
 │   │   ├── CHANGELOG.md      # Version history (Unreleased + versions)
@@ -114,12 +113,9 @@ ftc-claude/
 │   ├── nextftc/
 │   ├── panels/
 │   ├── ftc-dashboard/
-│   ├── robot-dev/           # Build, deploy, OpMode commands
-│   │   ├── commands/
-│   │   └── scripts/
-│   └── contributor/         # Skill-builder tools
-│       ├── skills/skill-builder/
-│       └── commands/
+│   └── robot-dev/            # Build, deploy, OpMode commands
+│       ├── commands/
+│       └── scripts/
 ├── template/                 # Template for new skills
 ├── install.sh                # Cross-platform installer
 ├── RELEASES.md               # Release process for maintainers
@@ -148,19 +144,18 @@ git clone https://github.com/YOUR-USERNAME/ftc-claude.git
 cd ftc-claude
 git checkout develop
 
-# 2. Install the contributor tools
-/plugin install contributor@ncssm-robotics/ftc-claude
+# 2. Create a new skill (Claude guides you through it)
+# Contributor tooling is project-local - no installation needed!
+/create-skill roadrunner library
 
-# 3. Create a new skill (Claude guides you through it)
-/contributor:create-skill roadrunner library
-
-# 4. Add changes to CHANGELOG.md Unreleased section
+# 3. Add changes to CHANGELOG.md Unreleased section
 # (No version bumping needed - automated during release)
+/update-skill roadrunner
 
-# 5. Validate before submitting
-/contributor:validate-skill roadrunner
+# 4. Validate before submitting
+/validate-skill roadrunner
 
-# 6. Submit PR to develop branch
+# 5. Submit PR to develop branch
 ```
 
 Or just ask Claude: *"Help me create a new FTC skill for RoadRunner"* - the skill-builder skill activates automatically and guides you through the process.
