@@ -21,7 +21,7 @@ DRY_RUN="${DRY_RUN:-false}"
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
 MARKETPLACE_JSON="$REPO_ROOT/.claude-plugin/marketplace.json"
 PLUGINS_DIR="$REPO_ROOT/plugins"
-RELEASE_NOTES_FILE="$REPO_ROOT/.github/RELEASE_NOTES.tmp.md"
+RELEASE_NOTES_FILE="/tmp/RELEASE_NOTES.tmp.md"
 
 # Colors for output
 RED='\033[0;31m'
