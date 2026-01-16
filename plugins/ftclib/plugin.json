@@ -1,6 +1,6 @@
 {
   "name": "ftclib",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "FTCLib library - command-based framework, pure pursuit, vision pipelines, gamepad extensions",
   "author": {
     "name": "NCSSM Robotics",
@@ -8,5 +8,13 @@
   },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
   "license": "MIT",
-  "keywords": ["ftc", "framework", "ftclib", "commands", "subsystems", "pure-pursuit", "vision"]
+  "keywords": [
+    "ftc",
+    "framework",
+    "ftclib",
+    "commands",
+    "subsystems",
+    "pure-pursuit",
+    "vision"
+  ]
 }

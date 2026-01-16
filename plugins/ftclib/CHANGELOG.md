@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-01-16
+
 ### Added
 - Initial release of FTCLib skill
 - Command-based framework documentation (commands, subsystems, scheduling)
