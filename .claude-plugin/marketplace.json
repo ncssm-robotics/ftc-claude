@@ -85,7 +85,7 @@
     },
     {
       "name": "robot-dev",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "FTC development commands - build, deploy, connect, debug, and control OpModes",
       "source": "./plugins/robot-dev",
       "skills": [
