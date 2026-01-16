@@ -11,6 +11,10 @@ on:
 
 jobs:
   claude-review:
+    # Only run on pull_request_target events OR issue_comments containing @claude-review
+    if: |
+      github.event_name == 'pull_request_target' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude-review'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
