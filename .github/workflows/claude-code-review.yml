@@ -5,6 +5,9 @@ on:
   # This runs in the base repo's context (has secrets) but checks out PR code
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
+  # Allow manual trigger via @claude-review comment on PRs
+  issue_comment:
+    types: [created]
 
 jobs:
   claude-review:
@@ -30,6 +33,8 @@ jobs:
           # OIDC token exchange doesn't work reliably with pull_request_target
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Allow manual trigger via @claude-review comment
+          trigger_phrase: '@claude-review'
           # Allow all external contributors to trigger reviews
           allowed_non_write_users: '*'
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
