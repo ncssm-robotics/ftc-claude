@@ -12,7 +12,7 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 |-------|----------|-------------|
 | **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
 | **pedro-pathing** | Library | Pedro Pathing autonomous library - Bezier curves, path building |
-| **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, localization |
+| **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, coordinate conversion |
 | **control** | Tools | Control system design, tuning (PID, feedforward), and system identification for elevators, arms, flywheels, turrets |
 | **pinpoint** | Hardware | GoBilda Pinpoint odometry - setup, tuning, LED status codes |
 | **limelight** | Hardware | Limelight 3A vision - AprilTags, MegaTag2, color tracking |
@@ -25,7 +25,7 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 
 | Skill | Description |
 |-------|-------------|
-| **contributor** | Skill-builder tools for creating new FTC skills - includes `/create-skill` and `/validate-skill` commands |
+| **contributor** | Skill-builder tools for managing FTC skills - includes `/create-skill` and `/validate-skill` commands |
 
 ## Installation
 
@@ -93,12 +93,20 @@ Once installed, skills activate automatically when relevant. Just ask Claude (or
 ```
 ftc-claude/
 ├── .claude-plugin/
-│   └── marketplace.json      # Plugin registry
-├── .github/workflows/
-│   └── validate-skills.yml   # CI/CD validation
+│   └── marketplace.json      # Plugin registry with versions
+├── .github/
+│   ├── scripts/              # Release automation scripts
+│   │   ├── prepare-release.sh
+│   │   └── lib/              # Version & changelog utilities
+│   └── workflows/
+│       ├── validate-skills.yml   # CI/CD validation
+│       ├── prepare-release.yml   # Automated version bumps
+│       ├── publish-release.yml   # GitHub release creation
+│       └── sync-develop.yml      # Branch synchronization
 ├── plugins/
 │   ├── decode/
-│   │   ├── plugin.json
+│   │   ├── plugin.json       # Plugin metadata with version
+│   │   ├── CHANGELOG.md      # Version history (Unreleased + versions)
 │   │   └── skills/decode/
 │   ├── pedro-pathing/
 │   ├── roadrunner/
@@ -116,9 +124,17 @@ ftc-claude/
 │       └── commands/
 ├── template/                 # Template for new skills
 ├── install.sh                # Cross-platform installer
+├── RELEASES.md               # Release process for maintainers
+├── VERSIONING.md             # Semantic versioning guidelines
 ├── CONTRIBUTING.md           # Contribution guide
 └── README.md
 ```
+
+### Branch Workflow
+
+- **`develop`** - Default branch for all development (PRs merge here)
+- **`main`** - Production branch with released, versioned code
+- **`release/*`** - Automated release branches (created by release workflow)
 
 ## Contributing
 
@@ -129,17 +145,29 @@ We welcome contributions from the FTC community! See [CONTRIBUTING.md](CONTRIBUT
 The easiest way to contribute is to let Claude help you build the skill:
 
 ```bash
-# 1. Install the contributor tools
+# 1. Fork and clone (targeting develop branch)
+git clone https://github.com/YOUR-USERNAME/ftc-claude.git
+cd ftc-claude
+git checkout develop
+
+# 2. Install the contributor tools
 /plugin install contributor@ncssm-robotics/ftc-claude
 
-# 2. Create a new skill (Claude guides you through it)
-/create-skill roadrunner library
+# 3. Create a new skill (Claude guides you through it)
+/contributor:create-skill roadrunner library
 
-# 3. Validate before submitting
-/validate-skill roadrunner
+# 4. Add changes to CHANGELOG.md Unreleased section
+# (No version bumping needed - automated during release)
+
+# 5. Validate before submitting
+/contributor:validate-skill roadrunner
+
+# 6. Submit PR to develop branch
 ```
 
 Or just ask Claude: *"Help me create a new FTC skill for RoadRunner"* - the skill-builder skill activates automatically and guides you through the process.
+
+**Important:** All PRs should target the `develop` branch. Version bumps are automated during the release process. Contributors only add changes to `## [Unreleased]` sections in `CHANGELOG.md`. See [RELEASES.md](RELEASES.md) for the maintainer release process.
 
 ### Manual Contribution
 

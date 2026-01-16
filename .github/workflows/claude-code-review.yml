@@ -1,41 +1,42 @@
 name: Claude Code Review
 
 on:
-  pull_request:
+  # Use pull_request_target to enable fork PR reviews with secrets access
+  # This runs in the base repo's context (has secrets) but checks out PR code
+  pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+  # Allow manual trigger via @claude-review comment on PRs
+  issue_comment:
+    types: [created]
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write  # write needed to post review comments
       issues: read
-      id-token: write
 
     steps:
+      # Checkout the PR's code (not base branch) for review
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 1
 
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Use API key for fork PR compatibility with pull_request_target
+          # OIDC token exchange doesn't work reliably with pull_request_target
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Allow manual trigger via @claude-review comment
+          trigger_phrase: '@claude-review'
+          # Allow trusted external contributors to trigger reviews
+          allowed_non_write_users: 'Prorickey,njfdev'
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
@@ -47,6 +48,10 @@ jobs:
             - For new skills: check SKILL.md has proper frontmatter (name, description with WHAT and WHEN triggers)
             - Verify plugin.json name matches the folder name
             - Check that new skills are added to marketplace.json
+            - If SKILL.md shows `uv run scripts/*.py`, check if the script only uses Python stdlib (sys, math, json, etc.)
+              - If script has NO external dependencies (no numpy, requests, pandas, etc.), suggest using `python scripts/*.py` instead
+              - Rationale: Simpler and more accessible - all systems have Python, not everyone has uv installed
+              - uv should only be recommended when scripts actually need external packages
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 

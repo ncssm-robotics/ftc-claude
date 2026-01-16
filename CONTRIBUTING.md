@@ -8,6 +8,7 @@ Thank you for your interest in contributing to the FTC Claude Skills Marketplace
 - [Manual Contribution](#manual-contribution)
 - [Skill Structure](#skill-structure)
 - [Writing Good Skills](#writing-good-skills)
+- [Versioning Guidelines](#versioning-guidelines)
 - [Testing Your Skill](#testing-your-skill)
 - [Submitting a Pull Request](#submitting-a-pull-request)
 - [Code of Conduct](#code-of-conduct)
@@ -23,18 +24,23 @@ The easiest way to contribute is to use the **contributor** plugin, which includ
 git clone https://github.com/YOUR-USERNAME/ftc-claude.git
 cd ftc-claude
 
-# 2. Install contributor tools
+# 2. Register the marketplace
+/plugin marketplace add ncssm-robotics/ftc-claude
+
+# 3. Install contributor tools
 /plugin install contributor@ncssm-robotics/ftc-claude
 
-# 3. Create a new skill
-/create-skill roadrunner library
+# 4. Restart Claude Code
 
-# 4. Claude guides you through filling in the content
+# 5. Create a new skill
+/contributor:create-skill roadrunner library
 
-# 5. Validate before submitting
-/validate-skill roadrunner
+# 6. Claude guides you through filling in the content
 
-# 6. Submit PR
+# 7. Validate before submitting
+/contributor:validate-skill roadrunner
+
+# 8. Submit PR
 ```
 
 ### Natural Language Approach
@@ -225,6 +231,143 @@ Move detailed content to reference files:
 
 Put the most common use case first. Users should be able to get started by reading just the first section.
 
+## Versioning Guidelines
+
+All plugins follow [Semantic Versioning 2.0.0](https://semver.org/). See [VERSIONING.md](VERSIONING.md) for complete details on version calculation rules.
+
+**Important:** Contributors **do not manage version numbers**. You only add changes to the `## [Unreleased]` section of `CHANGELOG.md` using the appropriate category. Version bumps are calculated automatically during the release process.
+
+### Version Format
+
+```
+MAJOR.MINOR.PATCH (e.g., 1.2.3)
+```
+
+- **MAJOR**: Breaking changes (removed features, changed formats)
+- **MINOR**: New features (backward compatible)
+- **PATCH**: Bug fixes, typos, clarifications
+
+### Changelog Workflow for Contributors
+
+When you make changes to a plugin, add an entry to the `## [Unreleased]` section of its `CHANGELOG.md`:
+
+```markdown
+## [Unreleased]
+
+### Added
+- New teleop strategies section with code examples
+- Support for Pinpoint V2 firmware
+
+### Fixed
+- Corrected coordinate calculation bug in autonomous paths
+```
+
+### Choosing the Right Category
+
+| Category | When to Use | Version Impact |
+|----------|-------------|----------------|
+| `### Added` | New features, sections, examples | MINOR bump |
+| `### Changed` | Modified behavior (breaking) | MAJOR bump |
+| `### Fixed` | Bug fixes, corrections | PATCH bump |
+| `### Removed` | Deleted features (breaking) | MAJOR bump |
+| `### Deprecated` | Features marked for future removal | MINOR bump |
+| `### Security` | Security-related fixes | PATCH bump |
+
+**Examples:**
+
+```markdown
+## [Unreleased]
+
+### Added ← Use for new capabilities
+- Added AprilTag detection examples
+- New troubleshooting section for IMU drift
+
+### Changed ← Use for behavior changes (breaking)
+- Changed coordinate system from inches to meters (BREAKING)
+- Updated path following algorithm to use new interpolation
+
+### Fixed ← Use for bug fixes
+- Corrected typo: "12 inches" was "120 inches"
+- Fixed broken link to official documentation
+
+### Removed ← Use when deleting features (breaking)
+- Removed deprecated specimen scoring (use new API instead)
+
+### Deprecated ← Use when warning about future removal
+- Deprecated old localization method (will be removed in v3.0.0)
+
+### Security ← Use for security fixes
+- Patched input validation vulnerability in configuration parser
+```
+
+### What NOT to Do
+
+❌ **Don't bump version numbers yourself**
+```diff
+- "version": "1.2.3"
++ "version": "1.3.0"  ← This will be done automatically
+```
+
+❌ **Don't create versioned changelog entries**
+```markdown
+## [1.3.0] - 2025-01-15  ← Don't do this
+### Added
+- New feature
+```
+
+✅ **Do add to Unreleased section**
+```markdown
+## [Unreleased]  ← Add here instead
+### Added
+- New feature
+```
+
+### Version Bump Automation
+
+Version bumps happen automatically during the release process:
+
+1. **Contributors:** Add changes to `## [Unreleased]`
+2. **Release time:** Maintainers trigger release workflow
+3. **Automation:** Script analyzes changelog categories and calculates version bumps
+4. **Result:** All version numbers updated automatically
+
+See [RELEASES.md](RELEASES.md) for the complete release process (for maintainers).
+
+### Changelog Format
+
+Each plugin has a `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/) format:
+
+```markdown
+# Changelog
+
+All notable changes to this plugin will be documented in this file.
+
+## [Unreleased]
+
+### Added
+- Features added during development (version TBD)
+
+### Fixed
+- Bugs fixed during development (version TBD)
+
+## [1.1.0] - 2025-01-15
+
+### Added
+- New teleop strategies section
+
+### Fixed
+- Coordinate transformation bug
+
+## [1.0.0] - 2025-01-01
+
+### Added
+- Initial release
+```
+
+### New Skills Start at 1.0.0
+
+New skills should start at version `1.0.0`. Use `0.x.x` only for skills still under active development where the API may change.
+
 ## Testing Your Skill
 
 ### Install Locally
@@ -262,28 +405,37 @@ head -1 plugins/your-skill-name/skills/your-skill-name/SKILL.md
 
 ## Submitting a Pull Request
 
-### 1. Create a Branch
+### 1. Ensure You're on the develop Branch
+
+All PRs should target the `develop` branch:
+
+```bash
+git checkout develop
+git pull origin develop
+```
+
+### 2. Create a Feature Branch
 
 ```bash
 git checkout -b add-your-skill-name
 ```
 
-### 2. Commit Your Changes
+### 3. Commit Your Changes
 
 ```bash
 git add plugins/your-skill-name .claude-plugin/marketplace.json
 git commit -m "Add your-skill-name skill for [brief description]"
 ```
 
-### 3. Push to Your Fork
+### 4. Push to Your Fork
 
 ```bash
 git push origin add-your-skill-name
 ```
 
-### 4. Open a Pull Request
+### 5. Open a Pull Request
 
-Go to GitHub and create a pull request. Include:
+Go to GitHub and create a pull request **targeting the `develop` branch**. Include:
 
 - **Title:** `Add [skill-name] skill`
 - **Description:**
@@ -291,21 +443,30 @@ Go to GitHub and create a pull request. Include:
   - What FTC hardware/library/tool it covers
   - Any dependencies or requirements
   - How you tested it
+  - Reference to changelog entry (link to CHANGELOG.md Unreleased section)
 
-### 5. CI Validation
+### 6. CI Validation
 
 Your PR will automatically run validation checks. Fix any errors before requesting review.
 
 ## Checklist Before Submitting
 
+### New Skills
 - [ ] `name` in SKILL.md matches the folder name
 - [ ] `name` is lowercase with hyphens only
 - [ ] `description` clearly explains when to use this skill
 - [ ] Code examples are tested and working
 - [ ] No sensitive information (API keys, team credentials)
-- [ ] Added to `marketplace.json`
+- [ ] Added to `marketplace.json` with version field
 - [ ] License specified (MIT recommended)
 - [ ] Spell-checked content
+- [ ] `CHANGELOG.md` created with initial 1.0.0 entry
+
+### Skill Updates
+- [ ] Changes added to `## [Unreleased]` section in `CHANGELOG.md`
+- [ ] Correct category used (Added/Changed/Fixed/Removed/Deprecated/Security)
+- [ ] Changes clearly described (users will see these in release notes)
+- [ ] **Do NOT** manually bump version numbers (handled automatically during release)
 
 ## Skill Categories
 
