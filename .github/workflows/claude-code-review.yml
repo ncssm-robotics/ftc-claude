@@ -47,9 +47,9 @@ jobs:
             /code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
 
             Review this PR for compliance with CLAUDE.md guidelines. CLAUDE.md references review skills that contain the complete check definitions - read these skill files for detailed criteria:
-            - plugins/contributor/skills/code-review/SKILL.md (structure, content quality, marketplace)
-            - plugins/contributor/skills/security-review/SKILL.md (credentials, file safety, FTC IP whitelist)
-            - plugins/contributor/skills/youth-safety-review/SKILL.md (content appropriateness for students)
+            - .claude/skills/code-review/SKILL.md (structure, content quality, marketplace)
+            - .claude/skills/security-review/SKILL.md (credentials, file safety, FTC IP whitelist)
+            - .claude/skills/youth-safety-review/SKILL.md (content appropriateness for students)
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 

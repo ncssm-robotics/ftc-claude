@@ -5,7 +5,6 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: ncssm-robotics
-  version: "2.0.0"
   category: tools
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(mkdir:*), Bash(chmod:*)
 ---
@@ -50,8 +49,8 @@ This skill teaches you how to create high-quality skills for the FTC Claude Skil
 
 | Command | Purpose |
 |---------|---------|
-| `/contributor:create-skill <name> [category]` | Create new plugin from template |
-| `/contributor:validate-skill <name>` | Validate plugin structure before PR |
+| `/create-skill <name> [category]` | Create new plugin from template |
+| `/validate-skill <name>` | Validate plugin structure before PR |
 
 > **Note:** Version bumps are automated during the release process. Contributors should add changes to the `## [Unreleased]` section of `CHANGELOG.md` instead. See [RELEASES.md](../../../RELEASES.md) for details.
 
