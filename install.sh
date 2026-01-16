@@ -24,8 +24,8 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGINS_DIR="$SCRIPT_DIR/plugins"
 
-# Available skills
-AVAILABLE_SKILLS=("decode" "pedro-pathing" "pinpoint" "limelight" "nextftc" "panels" "contributor")
+# Available skills (for robot teams - contributor tools are project-local in .claude/)
+AVAILABLE_SKILLS=("decode" "pedro-pathing" "pinpoint" "limelight" "nextftc" "panels" "roadrunner" "robot-dev" "ftc-dashboard")
 
 # Agent skill directories
 declare -A AGENT_DIRS=(
@@ -59,11 +59,13 @@ OPTIONS:
 SKILLS:
     decode              DECODE 2025-2026 game reference
     pedro-pathing       Pedro Pathing autonomous library
+    roadrunner          RoadRunner path planning library
     pinpoint            GoBilda Pinpoint odometry
     limelight           Limelight 3A vision system
     nextftc             NextFTC command-based framework
     panels              Panels debugging dashboard
-    contributor         Skill-builder tools for contributors
+    ftc-dashboard       FTC Dashboard telemetry
+    robot-dev           Build, deploy, OpMode commands
 
 EXAMPLES:
     ./install.sh pedro-pathing pinpoint     # Install two skills to detected agent
