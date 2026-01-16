@@ -35,8 +35,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Allow manual trigger via @claude-review comment
           trigger_phrase: '@claude-review'
-          # Allow all external contributors to trigger reviews
-          allowed_non_write_users: '*'
+          # Allow trusted external contributors to trigger reviews
+          allowed_non_write_users: 'Prorickey,njfdev'
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
