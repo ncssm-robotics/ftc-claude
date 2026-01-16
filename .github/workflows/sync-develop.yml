@@ -1,0 +1,103 @@
+name: Sync Develop
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    name: Merge main into develop
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0  # Need full history
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch main branch
+        run: |
+          git fetch origin main
+
+      - name: Attempt merge
+        id: merge
+        run: |
+          # Try to merge main into develop
+          if git merge origin/main --no-edit; then
+            echo "success=true" >> $GITHUB_OUTPUT
+            echo "Merge successful"
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+            echo "Merge failed - conflicts detected"
+          fi
+
+      - name: Push merged changes
+        if: steps.merge.outputs.success == 'true'
+        run: |
+          git push origin develop
+          echo "Successfully synced develop with main"
+
+      - name: Create issue on conflict
+        if: steps.merge.outputs.success == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          main_commit=$(git rev-parse origin/main)
+          main_short=$(git rev-parse --short origin/main)
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          gh issue create \
+            --title "Failed to sync develop with main" \
+            --label "maintenance" \
+            --label "urgent" \
+            --body "## Merge Conflict Detected
+
+          The automatic sync from main to develop failed due to merge conflicts.
+
+          **Main commit:** ${main_short} (${main_commit})
+
+          ### Manual Resolution Required
+
+          1. Checkout the develop branch and merge main manually
+          2. Resolve any conflicts
+          3. Push the resolved changes
+
+          ### Why This Happened
+
+          This usually occurs when hotfixes were committed directly to main or multiple release PRs were merged in quick succession.
+
+          ### Prevention
+
+          Always merge changes through develop first and use the release process for all version bumps.
+
+          ---
+          Automated issue created by sync-develop workflow
+          Run: ${run_url}"
+
+      - name: Abort merge on failure
+        if: steps.merge.outputs.success == 'false'
+        run: |
+          git merge --abort || true
+          echo "Merge aborted. Issue created to alert maintainers."
+          exit 1
+
+      - name: Summary
+        if: steps.merge.outputs.success == 'true'
+        run: |
+          echo "### Develop Branch Synced ✓" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Successfully merged main into develop." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Both branches are now in sync." >> $GITHUB_STEP_SUMMARY

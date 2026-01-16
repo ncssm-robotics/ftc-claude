@@ -1,0 +1,161 @@
+name: Publish Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/**/plugin.json'
+      - '.claude-plugin/marketplace.json'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history
+
+      - name: Extract marketplace version
+        id: version
+        run: |
+          VERSION=$(jq -r '.metadata.version' .claude-plugin/marketplace.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Marketplace version: $VERSION"
+
+      - name: Check if release already exists
+        id: check_release
+        run: |
+          if gh release view "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Release v${{ steps.version.outputs.version }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Release v${{ steps.version.outputs.version }} does not exist yet"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate release notes
+        if: steps.check_release.outputs.exists == 'false'
+        id: release_notes
+        run: |
+          # Generate release notes from changelogs
+          echo "# FTC Claude Skills Marketplace v${{ steps.version.outputs.version }}" > release_notes.md
+          echo "" >> release_notes.md
+          echo "This release includes updates to the following plugins:" >> release_notes.md
+          echo "" >> release_notes.md
+
+          # Extract changes from each plugin's CHANGELOG.md
+          for plugin_dir in plugins/*; do
+            if [ ! -d "$plugin_dir" ]; then
+              continue
+            fi
+
+            plugin_name=$(basename "$plugin_dir")
+            changelog="$plugin_dir/CHANGELOG.md"
+
+            if [ ! -f "$changelog" ]; then
+              continue
+            fi
+
+            # Get the latest version entry (first non-Unreleased version)
+            latest_version=$(awk '
+              /^## \[Unreleased\]/ { next }
+              /^## \[([0-9]+\.[0-9]+\.[0-9]+)\]/ {
+                match($0, /\[([0-9]+\.[0-9]+\.[0-9]+)\]/, arr)
+                print arr[1]
+                exit
+              }
+            ' "$changelog")
+
+            if [ -z "$latest_version" ]; then
+              continue
+            fi
+
+            # Extract the content for this version
+            changes=$(awk -v version="$latest_version" '
+              BEGIN { capture=0 }
+              /^## \['"$latest_version"'\]/ { capture=1; next }
+              capture && /^## \[/ { exit }
+              capture && NF { print }
+            ' "$changelog")
+
+            if [ -n "$changes" ]; then
+              echo "## $plugin_name (v$latest_version)" >> release_notes.md
+              echo "" >> release_notes.md
+              echo "$changes" >> release_notes.md
+              echo "" >> release_notes.md
+            fi
+          done
+
+          # Add installation instructions
+          echo "---" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "## Installation" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "To install from this marketplace:" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "\`\`\`bash" >> release_notes.md
+          echo "claude code plugin install ncssm-robotics/ftc-claude" >> release_notes.md
+          echo "\`\`\`" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "Or install individual plugins:" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "\`\`\`bash" >> release_notes.md
+          echo "claude code plugin install ncssm-robotics/ftc-claude/decode" >> release_notes.md
+          echo "\`\`\`" >> release_notes.md
+
+      - name: Create GitHub Release
+        if: steps.check_release.outputs.exists == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.version.outputs.version }}" \
+            --title "FTC Claude Skills Marketplace v${{ steps.version.outputs.version }}" \
+            --notes-file release_notes.md \
+            --latest
+
+      - name: Create per-plugin tags (optional)
+        if: steps.check_release.outputs.exists == 'false'
+        run: |
+          # Create tags for each plugin version (for tracking)
+          # Format: plugin-name-vX.Y.Z
+          for plugin_dir in plugins/*; do
+            if [ ! -d "$plugin_dir" ]; then
+              continue
+            fi
+
+            plugin_name=$(basename "$plugin_dir")
+            plugin_json="$plugin_dir/plugin.json"
+
+            if [ ! -f "$plugin_json" ]; then
+              continue
+            fi
+
+            plugin_version=$(jq -r '.version' "$plugin_json")
+            tag_name="${plugin_name}-v${plugin_version}"
+
+            # Create tag if it doesn't exist
+            if ! git rev-parse "$tag_name" >/dev/null 2>&1; then
+              git tag "$tag_name"
+              git push origin "$tag_name"
+              echo "Created tag: $tag_name"
+            else
+              echo "Tag already exists: $tag_name"
+            fi
+          done
+
+      - name: Summary
+        run: |
+          echo "### GitHub Release Published! 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** v${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.version }})" >> $GITHUB_STEP_SUMMARY
