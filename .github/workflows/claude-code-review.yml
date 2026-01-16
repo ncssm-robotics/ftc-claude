@@ -30,6 +30,8 @@ jobs:
           # OIDC token exchange doesn't work reliably with pull_request_target
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Allow all external contributors to trigger reviews
+          allowed_non_write_users: '*'
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
