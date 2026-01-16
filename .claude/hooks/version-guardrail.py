@@ -3,12 +3,16 @@
 Version guardrail hook - blocks Claude from modifying version fields.
 Versions are managed by the automated release process.
 
-Blocks version edits in:
+Blocks version edits (Edit tool only) in:
 - plugins/<name>/plugin.json (version field)
 - plugins/<name>/skills/<name>/SKILL.md (metadata.version in frontmatter)
 - .claude-plugin/marketplace.json (version fields)
 
-Uses JSON output with permissionDecision: deny to block Edit/Write tools.
+Note: Write tool is allowed because /create-skill needs to write new files
+with initial version fields. Only Edit operations are blocked to prevent
+accidental version changes to existing files.
+
+Uses JSON output with permissionDecision: deny to block edits.
 """
 
 import json
@@ -53,14 +57,6 @@ def main() -> None:
                 "See: .claude/skills/versioning/SKILL.md"
             )
 
-        # For Write tool: check if content contains version field
-        if content and '"version"' in content:
-            deny_edit(
-                "🚫 BLOCKED: Writing files with version fields is not allowed. "
-                "Versions are managed by the automated release process. "
-                "See: .claude/skills/versioning/SKILL.md"
-            )
-
     # Check SKILL.md files for frontmatter version fields
     if file_path.endswith("SKILL.md"):
         # For Edit tool: check for version in YAML frontmatter
@@ -72,14 +68,6 @@ def main() -> None:
                 "🚫 BLOCKED: Manual version edits in SKILL.md frontmatter are not allowed. "
                 "Versions are managed by the automated release process. "
                 "Add changes to ## [Unreleased] in CHANGELOG.md instead. "
-                "See: .claude/skills/versioning/SKILL.md"
-            )
-
-        # For Write tool: check for version field in frontmatter
-        if content and re.search(version_pattern, content):
-            deny_edit(
-                "🚫 BLOCKED: Writing SKILL.md with version fields is not allowed. "
-                "Versions are managed by the automated release process. "
                 "See: .claude/skills/versioning/SKILL.md"
             )
 

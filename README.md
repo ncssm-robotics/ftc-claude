@@ -86,8 +86,8 @@ Once installed, skills activate automatically when relevant. Just ask Claude (or
 ```
 ftc-claude/
 ├── .claude/                  # Contributor tooling (project-local)
-│   ├── commands/             # /create-skill, /validate-skill, /review
-│   ├── skills/               # skill-builder, code-review, versioning
+│   ├── commands/             # /create-skill, /validate-skill, /update-skill, /review
+│   ├── skills/               # skill-builder, code-review, security-review, versioning, youth-safety-review
 │   ├── scripts/              # Validation scripts
 │   └── hooks/                # Version guardrail hook
 ├── .claude-plugin/
