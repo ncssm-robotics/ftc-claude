@@ -1,0 +1,79 @@
+{
+  "validation_passed": false,
+  "model_type": "first_order_gravity",
+  "metrics": {
+    "R_squared": -3.4250637508584,
+    "RMSE": 78.3934241849413,
+    "normalized_RMSE": 0.783934241849413,
+    "MAE": 68.96971785539992,
+    "max_error": 100.03276488215968,
+    "num_samples": 46
+  },
+  "physics_checks": {
+    "all_passed": true,
+    "checks": {
+      "K": {
+        "value": 12.0,
+        "range": [
+          0.001,
+          1000.0
+        ],
+        "in_range": true,
+        "confidence": 0.95,
+        "high_confidence": true,
+        "passed": true
+      },
+      "tau": {
+        "value": 2.0,
+        "range": [
+          0.01,
+          100.0
+        ],
+        "in_range": true,
+        "confidence": 0.92,
+        "high_confidence": true,
+        "passed": true
+      },
+      "kg": {
+        "value": 0.15,
+        "range": [
+          0.0,
+          1.0
+        ],
+        "in_range": true,
+        "confidence": 0.88,
+        "high_confidence": true,
+        "passed": true
+      }
+    },
+    "warnings": []
+  },
+  "residual_analysis": {
+    "mean_residual": 68.96971785539992,
+    "std_residual": 37.26535890591516,
+    "normalized_residual_std": 0.3726535890591516,
+    "autocorrelation_at_lag1": 0.9984741520665347,
+    "systematic_bias": true,
+    "bias_description": "Constant bias: mean residual = 68.9697; High autocorrelation = 0.998 (residuals not white noise)"
+  },
+  "cross_validation": {
+    "enabled": false,
+    "train_R_squared": 0,
+    "test_R_squared": 0,
+    "overfitting_detected": false,
+    "notes": "Cross-validation not enabled"
+  },
+  "acceptance_criteria": {
+    "R_squared_threshold": 0.85,
+    "confidence_threshold": 0.8,
+    "max_normalized_RMSE": 0.15,
+    "min_data_points": 20
+  },
+  "recommendations": [
+    "\u2717 Model validation failed",
+    "  - R\u00b2 (-3.425) below threshold (0.85)",
+    "  - Normalized RMSE (0.784) above threshold (0.15)",
+    "  - Systematic bias in residuals detected"
+  ],
+  "fallback_suggestion": "Try simpler model: first_order (R\u00b2=-3.425 < 0.85)"
+}

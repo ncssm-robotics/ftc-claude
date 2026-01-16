@@ -13,7 +13,7 @@ A marketplace for AI coding agent skills designed to help FTC (FIRST Tech Challe
 | **decode** | Game | DECODE 2025-2026 game reference - field layout, scoring, coordinates |
 | **pedro-pathing** | Library | Pedro Pathing autonomous library - Bezier curves, path building |
 | **roadrunner** | Library | RoadRunner path planning - trajectories, motion profiles, localization |
-| **control-engineer** | Library | Control systems guide with autonomous tuning - PID, feedforward, /tune-controller |
+| **control** | Tools | Control system design, tuning (PID, feedforward), and system identification for elevators, arms, flywheels, turrets |
 | **pinpoint** | Hardware | GoBilda Pinpoint odometry - setup, tuning, LED status codes |
 | **limelight** | Hardware | Limelight 3A vision - AprilTags, MegaTag2, color tracking |
 | **nextftc** | Framework | NextFTC command-based framework - commands, subsystems, bindings |
@@ -105,7 +105,7 @@ ftc-claude/
 │   ├── pinpoint/
 │   ├── limelight/
 │   ├── nextftc/
-│   ├── control-engineer/       # Control systems guide
+│   ├── control/                # Control systems guide
 │   ├── panels/
 │   ├── ftc-dashboard/
 │   ├── robot-dev/           # Build, deploy, OpMode commands

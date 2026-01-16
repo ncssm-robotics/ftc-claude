@@ -72,10 +72,10 @@
       "skills": ["./skills/ftc-dashboard"]
     },
     {
-      "name": "control-engineer",
-      "description": "Control system guide with autonomous tuning - PID, feedforward, /tune-controller command for automated parameter optimization",
-      "source": "./plugins/control-engineer",
-      "skills": ["./skills/control-engineer"]
+      "name": "control",
+      "description": "Design, tune, and debug control systems for FTC mechanisms - PID, feedforward, sysid, custom transfer functions. Use for tuning elevators/arms/flywheels, diagnosing oscillation/overshoot, calculating gains (kP/kI/kD/kG/kV)",
+      "source": "./plugins/control",
+      "skills": ["./skills/control"]
     }
   ]
 }

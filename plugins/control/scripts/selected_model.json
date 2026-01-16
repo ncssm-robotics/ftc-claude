@@ -1,0 +1,54 @@
+{
+  "selected_model": {
+    "model_type": "variable-inertia",
+    "parameters": [
+      "J_base",
+      "J_slope",
+      "b",
+      "kg"
+    ],
+    "num_parameters": 4,
+    "complexity": "complex",
+    "equation": "J(pos) * accel = torque - b * vel - kg",
+    "transfer_function": null
+  },
+  "mechanism": "elevator",
+  "characteristics": {
+    "has_friction": "yes",
+    "has_backlash": null,
+    "load_varies": "yes",
+    "cable_driven": null,
+    "has_oscillation": null,
+    "knows_angle": null
+  },
+  "description": "Variable inertia for extending mechanisms",
+  "use_cases": [
+    "Telescoping elevators",
+    "Extending intakes",
+    "Load varies during motion",
+    "Position-dependent dynamics"
+  ],
+  "advantages": [
+    "Handles changing mass/inertia",
+    "Accurate for extending mechanisms",
+    "Physics-based approach"
+  ],
+  "limitations": [
+    "Most complex (position-dependent)",
+    "Requires extensive data at multiple positions",
+    "Hard to validate",
+    "May need per-position fitting"
+  ],
+  "validation_requirements": {
+    "min_r_squared": 0.85,
+    "min_confidence": 0.8,
+    "physics_checks": [
+      "all_parameters_positive",
+      "reasonable_ranges"
+    ]
+  },
+  "fallback_model": {
+    "model_type": "first-order-gravity",
+    "reason": "Use if primary model fails validation (R\u00b2 < 0.85)"
+  }
+}

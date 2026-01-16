@@ -4,7 +4,7 @@ argument-hint: ""
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion]
 ---
 
-# /tune-controller - Autonomous Controller Tuning
+# /tune - Autonomous Controller Tuning
 
 Provides fully autonomous PID and feedforward tuning for FTC robot mechanisms. Generates test OpModes, runs experiments, captures telemetry, analyzes data, and tunes parameters in real-time.
 
@@ -77,7 +77,7 @@ The system detects and uses your existing FTC libraries:
 ## Process Overview
 
 ```
-User: /tune-controller
+User: /tune
 
 ↓
 
@@ -168,7 +168,7 @@ val targetVelocity = targetVelocity.coerceIn(-MAX_VEL, MAX_VEL)
 ## Example Usage
 
 ```bash
-/tune-controller
+/tune
 
 # Select mechanism type:
 # 1. Elevator/Lift
@@ -280,11 +280,11 @@ The orchestrator will:
 2. **Secure Mechanism**: Ensure mechanism can't damage itself or surroundings
 3. **Monitor Telemetry**: Watch real-time position/velocity/power during runs
 4. **Battery Matters**: Voltage affects motor behavior - tune with fresh battery
-5. **Iterate if Needed**: Can re-run `/tune-controller` to refine gains
+5. **Iterate if Needed**: Can re-run `/tune` to refine gains
 6. **Document Gains**: Final gains are saved to JSON file for future reference
 
 ## Related Documentation
 
-- Control-engineer skill: [AUTONOMOUS_TUNING.md](../skills/control-engineer/AUTONOMOUS_TUNING.md) - Detailed tuning guide
-- Control-engineer skill: [TUNING_GUIDE.md](../skills/control-engineer/TUNING_GUIDE.md) - Manual tuning reference
+- control skill: [AUTONOMOUS_TUNING.md](../skills/control/AUTONOMOUS_TUNING.md) - Detailed tuning guide
+- control skill: [TUNING_GUIDE.md](../skills/control/TUNING_GUIDE.md) - Manual tuning reference
 - Robot-dev skill commands: `/deploy`, `/init`, `/start`, `/stop`, `/log`

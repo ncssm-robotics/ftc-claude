@@ -1,0 +1,37 @@
+{
+  "model_type": "custom-double-integrator",
+  "description": "Double integrator with damping for high-inertia mechanisms",
+  "complexity": "moderate",
+  "parameters": ["J", "b"],
+  "equation": "J*ddx + b*dx = u",
+  "transfer_function": "1 / (J*s^2 + b*s)",
+  "state_space": {
+    "A": [["0", "1"], ["0", "-b/J"]],
+    "B": [["0"], ["1/J"]],
+    "C": [["1", "0"]],
+    "D": [["0"]]
+  },
+  "parameter_bounds": {
+    "J": [0.001, 100.0],
+    "b": [0.0, 10.0]
+  },
+  "initial_guess": {
+    "J": 1.0,
+    "b": 0.5
+  },
+  "use_cases": [
+    "Double-stage elevators with significant inertia",
+    "Heavy mechanisms requiring acceleration control",
+    "Systems where first-order response is too fast"
+  ],
+  "advantages": [
+    "Accurately models inertial dynamics",
+    "Natural derivative control term",
+    "Good for trajectory planning"
+  ],
+  "limitations": [
+    "Requires acceleration calculation (noisy)",
+    "More parameters than first-order",
+    "May overfit with poor data quality"
+  ]
+}

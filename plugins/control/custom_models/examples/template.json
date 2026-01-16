@@ -1,0 +1,32 @@
+{
+  "model_type": "custom-your-model-name",
+  "description": "Brief description of what this models and when to use it",
+  "complexity": "simple",
+  "parameters": ["param1", "param2"],
+  "equation": "param1*ddx + param2*dx = u",
+  "transfer_function": "1 / (param1*s^2 + param2*s)",
+  "state_space": {
+    "A": [["0", "1"], ["0", "-param2/param1"]],
+    "B": [["0"], ["1/param1"]],
+    "C": [["1", "0"]],
+    "D": [["0"]]
+  },
+  "parameter_bounds": {
+    "param1": [0.001, 100.0],
+    "param2": [0.0, 10.0]
+  },
+  "initial_guess": {
+    "param1": 1.0,
+    "param2": 0.5
+  },
+  "use_cases": [
+    "When your mechanism fits this pattern",
+    "Specific scenario or symptom"
+  ],
+  "advantages": [
+    "What this model does well"
+  ],
+  "limitations": [
+    "What this model doesn't capture"
+  ]
+}

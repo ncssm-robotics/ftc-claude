@@ -1,0 +1,39 @@
+{
+  "model_type": "custom-nonlinear-friction",
+  "description": "Extended friction model with velocity-dependent and Coulomb terms",
+  "complexity": "complex",
+  "parameters": ["J", "b_visc", "f_coulomb", "f_static", "kg"],
+  "equation": "J*accel = u - b_visc*vel - f_coulomb*sign(vel) - f_static*tanh(100*vel) - kg",
+  "parameter_bounds": {
+    "J": [0.001, 100.0],
+    "b_visc": [0.0, 10.0],
+    "f_coulomb": [0.0, 1.0],
+    "f_static": [0.0, 1.5],
+    "kg": [-1.0, 1.0]
+  },
+  "initial_guess": {
+    "J": 1.0,
+    "b_visc": 0.1,
+    "f_coulomb": 0.05,
+    "f_static": 0.08,
+    "kg": 0.1
+  },
+  "use_cases": [
+    "Mechanisms with significant stiction (won't start moving)",
+    "High-friction gearboxes or slides",
+    "Asymmetric response (moves differently up vs down)",
+    "Dead zone evident in step response"
+  ],
+  "advantages": [
+    "Most physically accurate friction model",
+    "Captures stiction and Coulomb effects",
+    "Handles velocity-dependent behavior",
+    "Models asymmetry between directions"
+  ],
+  "limitations": [
+    "5 parameters require excellent data quality",
+    "Nonlinear (no transfer function)",
+    "Difficult to validate",
+    "May overfit noise as friction"
+  ]
+}
