@@ -1,6 +1,6 @@
 {
   "name": "robot-dev",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "FTC robot development commands - build, deploy, connect, debug, and control OpModes. Includes tuning orchestration scripts for autonomous PID tuning.",
   "author": {
     "name": "NCSSM Robotics",
