@@ -1,0 +1,25 @@
+{
+  "model_type": "angle_dependent_gravity",
+  "mechanism": "arm",
+  "parameters": {
+    "K": 8.0,
+    "tau": 1.5,
+    "kg": 0.20
+  },
+  "angle_conversion": "angle_rad = (encoder_ticks - 0) * 2 * pi / 8192",
+  "transfer_function": "8.0 / (1.5*s + 1) + 0.20*cos(angle)",
+  "confidence": {
+    "K": 0.93,
+    "tau": 0.90,
+    "kg": 0.91
+  },
+  "validation": {
+    "R_squared": 0.89,
+    "RMSE": 15.2,
+    "normalized_RMSE": 0.10,
+    "validation_passed": true
+  },
+  "identification_method": "multi_angle_fitting",
+  "data_source": "arm_multi_position_test.json",
+  "notes": "Arm mechanism with gravity compensation that varies with angle. Model validated across angles from 0° to 180°. kg represents maximum gravity torque at horizontal (90°)."
+}

@@ -1,0 +1,31 @@
+{
+  "mechanism": "elevator",
+  "synthesis_method": "pole-placement",
+  "performance_specs": {
+    "desired_rise_time_sec": 1.0,
+    "max_overshoot_percent": 10.0
+  },
+  "calculated_gains": {
+    "kP": 0.338263,
+    "kD": 0.762925,
+    "kG": 0.15
+  },
+  "predicted_performance": {
+    "rise_time_sec": 1.0,
+    "overshoot_percent": 10.0,
+    "settling_time_sec": 3.16,
+    "damping_ratio": 0.591,
+    "natural_frequency_rad_s": 2.14,
+    "peak_time_sec": 1.82,
+    "phase_margin_deg": null,
+    "gain_margin_db": null
+  },
+  "robustness": {
+    "parameter_sensitivity": "Low (10% parameter error \u2192 ~5% performance change)",
+    "note": "Detailed sensitivity analysis requires Monte Carlo simulation"
+  },
+  "design_parameters": {
+    "desired_zeta": 0.591,
+    "desired_omega_n": 2.14
+  }
+}

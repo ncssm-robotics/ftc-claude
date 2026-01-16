@@ -1,0 +1,43 @@
+{
+  "model_type": "custom-arm-cable-compliance",
+  "description": "Arm with cable compliance and angle-dependent gravity",
+  "complexity": "moderate",
+  "parameters": ["J", "b", "k_cable", "kg"],
+  "equation": "J*ddtheta + b*dtheta + k_cable*theta = u + kg*cos(theta)",
+  "transfer_function": "1 / (J*s^2 + b*s + k_cable)",
+  "state_space": {
+    "A": [["0", "1"], ["-k_cable/J", "-b/J"]],
+    "B": [["0"], ["1/J"]],
+    "C": [["1", "0"]],
+    "D": [["0"]]
+  },
+  "parameter_bounds": {
+    "J": [0.001, 50.0],
+    "b": [0.0, 5.0],
+    "k_cable": [0.0, 10.0],
+    "kg": [0.0, 1.0]
+  },
+  "initial_guess": {
+    "J": 2.0,
+    "b": 0.3,
+    "k_cable": 0.5,
+    "kg": 0.15
+  },
+  "use_cases": [
+    "Cable-driven or belt-driven arms",
+    "Long arms with structural flex",
+    "Arms that bounce or oscillate at target",
+    "Systems with spring-like compliance"
+  ],
+  "advantages": [
+    "Accounts for cable stretch",
+    "Predicts oscillation accurately",
+    "Includes gravity compensation",
+    "Enables feedforward control"
+  ],
+  "limitations": [
+    "Assumes small angles for cos(theta) approximation",
+    "Cable stiffness may vary with position",
+    "Requires clean data to identify k_cable"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "model_type": "first_order_gravity",
+  "mechanism": "elevator",
+  "parameters": {
+    "K": 12.0,
+    "tau": 2.0,
+    "kg": 0.15
+  },
+  "transfer_function": "12.0 / (2.0*s + 1) + 0.15",
+  "confidence": {
+    "K": 0.95,
+    "tau": 0.92,
+    "kg": 0.88
+  },
+  "validation": {
+    "R_squared": 0.94,
+    "RMSE": 8.5,
+    "normalized_RMSE": 0.06,
+    "validation_passed": true
+  },
+  "identification_method": "least_squares",
+  "data_source": "step_response_test_2026_01_15.json"
+}

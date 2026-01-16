@@ -1,0 +1,26 @@
+{
+  "model_type": "second_order",
+  "mechanism": "elevator",
+  "parameters": {
+    "K": 10.0,
+    "omega_n": 3.14,
+    "zeta": 0.6,
+    "kg": 0.15
+  },
+  "transfer_function": "10.0 * 9.86 / (s^2 + 3.77*s + 9.86)",
+  "confidence": {
+    "K": 0.91,
+    "omega_n": 0.89,
+    "zeta": 0.85,
+    "kg": 0.87
+  },
+  "validation": {
+    "R_squared": 0.91,
+    "RMSE": 12.3,
+    "normalized_RMSE": 0.08,
+    "validation_passed": true
+  },
+  "identification_method": "least_squares",
+  "data_source": "step_response_cable_elevator.json",
+  "notes": "Cable-driven mechanism shows second-order dynamics with natural resonance at 3.14 rad/s. Damping ratio of 0.6 indicates underdamped behavior with expected overshoot."
+}

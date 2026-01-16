@@ -1,0 +1,25 @@
+{
+  "mechanism": "elevator",
+  "synthesis_method": "model-based-zn",
+  "performance_specs": {
+    "desired_rise_time_sec": 1.0,
+    "max_overshoot_percent": 10.0
+  },
+  "calculated_gains": {
+    "kP": 0.020833,
+    "kD": 1.0,
+    "kG": 0.15
+  },
+  "predicted_performance": {
+    "rise_time_sec": 4.4,
+    "overshoot_percent": 10.0,
+    "settling_time_sec": 16.0,
+    "note": "Approximate predictions for Ziegler-Nichols tuning",
+    "phase_margin_deg": null,
+    "gain_margin_db": null
+  },
+  "robustness": {
+    "parameter_sensitivity": "Low (10% parameter error \u2192 ~5% performance change)",
+    "note": "Detailed sensitivity analysis requires Monte Carlo simulation"
+  }
+}
