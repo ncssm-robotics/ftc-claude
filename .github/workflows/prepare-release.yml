@@ -29,7 +29,7 @@ jobs:
         with:
           ref: develop
           fetch-depth: 0  # Need full history for git operations
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_PAT }}
 
       - name: Configure Git
         run: |
@@ -45,7 +45,7 @@ jobs:
         env:
           DRY_RUN: ${{ inputs.dry_run }}
           TARGET_BRANCH: ${{ inputs.target_branch }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
         run: |
           .github/scripts/prepare-release.sh
 
