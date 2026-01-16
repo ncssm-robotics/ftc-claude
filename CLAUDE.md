@@ -20,11 +20,14 @@ When reviewing PRs, check for these common issues:
 - [ ] `SKILL.md` has YAML frontmatter with `name`, `description`, `license`, `metadata`
 - [ ] `description` includes WHAT the skill does AND WHEN to use it (trigger words)
 - [ ] Folder name matches `name` field in SKILL.md frontmatter
-- [ ] Skill is added to `.claude-plugin/marketplace.json`
+- [ ] Skill is added to `.claude-plugin/marketplace.json` with version
 - [ ] Skill is added to `README.md` skill table
 - [ ] SKILL.md is under 500 lines
 - [ ] Has Quick Start section with code examples
 - [ ] Has Anti-Patterns section
+- [ ] `CHANGELOG.md` exists with `## [Unreleased]` section and initial `## [1.0.0]` entry
+- [ ] Version is `1.0.0` in all three locations (plugin.json, SKILL.md metadata, marketplace.json)
+- [ ] **Note:** New plugins SHOULD start at version 1.0.0 - this is correct, not a violation
 
 ### Skill Updates
 - [ ] Changes added to `## [Unreleased]` section in `CHANGELOG.md`
