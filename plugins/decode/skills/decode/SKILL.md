@@ -14,7 +14,7 @@ metadata:
 
 DECODE presented by RTX is the 2025-2026 FIRST Tech Challenge game where teams collect, classify, and score artifacts to unlock patterns and motifs.
 
-## Quick Reference
+## Quick Start
 
 | Element | Description |
 |---------|-------------|
