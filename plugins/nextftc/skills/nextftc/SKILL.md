@@ -151,6 +151,69 @@ ParallelGroup(cmd1, cmd2)()           // Run simultaneously
 Delay(0.5.seconds)
 ```
 
+## Anti-Patterns
+
+### Don't: Forget to schedule commands
+
+```kotlin
+// BAD - Command is created but never runs
+SequentialGroup(path1, path2)  // Missing ()!
+
+// GOOD - Call () to schedule
+SequentialGroup(path1, path2)()
+```
+
+### Don't: Block in command update()
+
+```kotlin
+// BAD - Blocking stops all other commands
+override fun update() {
+    Thread.sleep(100)  // Never block!
+    while (!sensorReady) { }  // Never poll-wait!
+}
+
+// GOOD - Use isDone() for completion checks
+override fun update() {
+    // Quick, non-blocking work only
+}
+override fun isDone() = sensorReady
+```
+
+### Don't: Forget required components
+
+```kotlin
+// BAD - Bindings won't work without component
+class MyTeleOp : NextFTCOpMode() {
+    override fun onStartButtonPressed() {
+        Gamepads.gamepad1.a whenBecomesTrue cmd  // Fails silently!
+    }
+}
+
+// GOOD - Add BindingsComponent
+class MyTeleOp : NextFTCOpMode() {
+    init {
+        addComponents(BindingsComponent)
+    }
+}
+```
+
+### Don't: Access hardware before init
+
+```kotlin
+// BAD - hardwareMap is null in constructor
+class MyOp : NextFTCOpMode() {
+    val motor = hardwareMap.get(...)  // NullPointerException!
+}
+
+// GOOD - Access hardware in onInit() or later
+class MyOp : NextFTCOpMode() {
+    lateinit var motor: DcMotor
+    override fun onInit() {
+        motor = hardwareMap.get(...)
+    }
+}
+```
+
 ## Reference Documentation
 
 - [COMPONENTS.md](COMPONENTS.md) - Component lifecycle (pre/post hooks for all phases)
