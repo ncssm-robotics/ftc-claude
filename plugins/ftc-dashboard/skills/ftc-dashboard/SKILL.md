@@ -6,6 +6,7 @@ description: |
   ask about dashboard setup, telemetry graphing, @Config variables, canvas drawing on field,
   or streaming camera to browser.
 license: MIT
+compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   category: visualization
   version: 1.0.0
