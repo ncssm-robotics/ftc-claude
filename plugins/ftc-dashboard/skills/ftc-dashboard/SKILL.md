@@ -9,7 +9,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   category: visualization
-  version: 1.0.0
+  version: "1.1.0"
   library-version: 0.5.1
   source: https://acmerobotics.github.io/ftc-dashboard/
 ---

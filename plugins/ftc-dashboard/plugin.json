@@ -1,6 +1,6 @@
 {
   "name": "ftc-dashboard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "FTC Dashboard - React-based web dashboard for telemetry, configuration variables, field overlay, and camera streaming",
   "author": {
     "name": "NCSSM Robotics",
@@ -8,5 +8,13 @@
   },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
   "license": "MIT",
-  "keywords": ["ftc", "dashboard", "telemetry", "config", "visualization", "camera", "field-overlay"]
+  "keywords": [
+    "ftc",
+    "dashboard",
+    "telemetry",
+    "config",
+    "visualization",
+    "camera",
+    "field-overlay"
+  ]
 }
