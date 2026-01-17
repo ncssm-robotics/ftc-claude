@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-01-17
+
+### Added
+- Anti-Patterns section covering command scheduling, blocking, components, and hardware access
+
 ## [1.0.0] - 2025-01-15
 
 ### Added

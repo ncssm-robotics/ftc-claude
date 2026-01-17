@@ -1,6 +1,6 @@
 {
   "name": "pinpoint",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GoBilda Pinpoint odometry computer - setup, pod offsets, tuning, and LED status codes",
   "author": {
     "name": "NCSSM Robotics",
@@ -8,5 +8,12 @@
   },
   "repository": "https://github.com/ncssm-robotics/ftc-claude",
   "license": "MIT",
-  "keywords": ["ftc", "hardware", "odometry", "gobilda", "pinpoint", "localization"]
+  "keywords": [
+    "ftc",
+    "hardware",
+    "odometry",
+    "gobilda",
+    "pinpoint",
+    "localization"
+  ]
 }

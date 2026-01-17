@@ -2,6 +2,28 @@
 
 This is the FTC Claude Skills Marketplace - a collection of AI coding agent skills for FIRST Tech Challenge robotics teams.
 
+## MANDATORY: When Making Changes to Skills
+
+**Before committing ANY change to a plugin's SKILL.md or scripts, you MUST:**
+
+1. **Update CHANGELOG.md first** - Add entry to `## [Unreleased]` section
+2. **Use correct category** based on change type:
+   - `### Added` - New sections, examples, features
+   - `### Fixed` - Bug fixes, corrections, consistency fixes
+   - `### Changed` - Breaking behavior changes
+   - `### Removed` - Deleted features (breaking)
+3. **Write user-facing descriptions** - These appear in release notes
+4. **Never bump version numbers** - Automated during release
+
+**Workflow for each commit:**
+```
+1. Make change to SKILL.md (or other plugin files)
+2. Update plugin's CHANGELOG.md [Unreleased] section
+3. Commit both files together
+```
+
+**This applies to YOU (the agent) when making changes, not just when reviewing others' work.**
+
 ## Repository Structure
 
 - `plugins/` - Skill plugins for robot teams, each with `plugin.json`, `CHANGELOG.md`, and `skills/<name>/SKILL.md`

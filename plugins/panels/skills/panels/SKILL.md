@@ -5,7 +5,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: ncssm-robotics
-  version: "1.0.0"
+  version: "1.0.1"
   category: tools
 ---
 
@@ -13,7 +13,7 @@ metadata:
 
 Panels (by Lazar/ByteForce) is a web-based dashboard for FTC robots providing telemetry, graphs, and live configuration.
 
-## Setup
+## Quick Start
 
 Add dependency in `TeamCode/build.gradle`:
 ```gradle

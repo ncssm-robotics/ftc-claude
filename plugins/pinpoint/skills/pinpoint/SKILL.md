@@ -5,7 +5,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: ncssm-robotics
-  version: "1.0.0"
+  version: "1.1.0"
   category: hardware
 ---
 
@@ -109,6 +109,55 @@ pinpoint.resetPosAndIMU();  // MUST be stationary!
 // In loop()
 pinpoint.update();  // Call every loop to refresh data
 Pose2D pos = pinpoint.getPosition();  // x, y in mm; heading in radians
+```
+
+## Anti-Patterns
+
+### Don't: Use I2C port 0
+
+```java
+// BAD - Port 0 is reserved for internal IMU
+// Robot configuration: pinpoint on Port 0  <-- WRONG!
+
+// GOOD - Use any port except 0
+// Robot configuration: pinpoint on Port 1, 2, or 3
+```
+
+### Don't: Move robot during reset
+
+```java
+// BAD - Calibration fails if robot is moving
+pinpoint.resetPosAndIMU();
+follower.followPath(path);  // Started too soon!
+
+// GOOD - Ensure robot is stationary
+pinpoint.resetPosAndIMU();
+sleep(300);  // Wait for calibration (LED turns green)
+follower.followPath(path);
+```
+
+### Don't: Forget to call update()
+
+```java
+// BAD - Position data is stale
+Pose2D pos = pinpoint.getPosition();  // Same value every loop!
+
+// GOOD - Update before reading
+pinpoint.update();
+Pose2D pos = pinpoint.getPosition();
+```
+
+### Don't: Ignore LED status
+
+```java
+// BAD - Using bad data without checking
+// LED is purple but code continues anyway
+
+// GOOD - Check status before trusting data
+if (pinpoint.getDeviceStatus() == DeviceStatus.READY) {
+    Pose2D pos = pinpoint.getPosition();
+    // Use position data
+}
 ```
 
 ## Reference Documentation

@@ -5,7 +5,7 @@ license: MIT
 compatibility: Claude Code, Codex CLI, VS Code Copilot, Cursor
 metadata:
   author: ncssm-robotics
-  version: "1.0.0"
+  version: "1.1.0"
   category: game
   season: "2025-2026"
 ---
@@ -14,7 +14,7 @@ metadata:
 
 DECODE presented by RTX is the 2025-2026 FIRST Tech Challenge game where teams collect, classify, and score artifacts to unlock patterns and motifs.
 
-## Quick Reference
+## Quick Start
 
 | Element | Description |
 |---------|-------------|
@@ -99,6 +99,48 @@ python scripts/convert.py all 72 72
 - [FIELD_POSITIONS.md](FIELD_POSITIONS.md) - All positions in Pedro coordinates
 - [COORDINATES.md](COORDINATES.md) - Coordinate system details
 - [STRATEGY.md](STRATEGY.md) - Autonomous and teleop strategies
+
+## Anti-Patterns
+
+### Don't: Hard-code field positions
+
+```kotlin
+// BAD - Magic numbers scattered throughout code
+val scorePose = Pose(24.0, 48.0, Math.toRadians(90.0))
+
+// GOOD - Centralized constants with clear names
+object FieldPositions {
+    val SCORE_HIGH_LEFT = Pose(24.0, 48.0, Math.toRadians(90.0))
+}
+val scorePose = FieldPositions.SCORE_HIGH_LEFT
+```
+
+### Don't: Ignore artifact control limits
+
+```kotlin
+// BAD - No tracking of artifact count
+fun collectArtifact() {
+    intake.run()  // May exceed 3-artifact limit
+}
+
+// GOOD - Enforce the limit in code
+fun collectArtifact() {
+    if (artifactCount < 3) {
+        intake.run()
+        artifactCount++
+    }
+}
+```
+
+### Don't: Mix coordinate systems
+
+```kotlin
+// BAD - Mixing FTC (meters, center origin) with Pedro (inches, corner origin)
+val pose = Pose(ftcX, pedroY, heading)  // Inconsistent units!
+
+// GOOD - Always convert to one system
+val pedroPose = CoordinateConversion.ftcToPedro(ftcX, ftcY, heading)
+```
 
 ## Official Resources
 
