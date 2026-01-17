@@ -4,7 +4,8 @@ This is the FTC Claude Skills Marketplace - a collection of AI coding agent skil
 
 ## Repository Structure
 
-- `plugins/` - Individual skill plugins, each with `plugin.json`, `CHANGELOG.md`, and `skills/<name>/SKILL.md`
+- `plugins/` - Skill plugins for robot teams, each with `plugin.json`, `CHANGELOG.md`, and `skills/<name>/SKILL.md`
+- `.claude/` - Project-local contributor tooling (commands, skills, scripts, hooks)
 - `.claude-plugin/marketplace.json` - Registry of all available plugins with versions
 - `VERSIONING.md` - Semantic versioning guidelines for plugins
 - `template/` - Templates for new plugins including `CHANGELOG.md`
@@ -13,62 +14,41 @@ This is the FTC Claude Skills Marketplace - a collection of AI coding agent skil
 
 ## Code Review Guidelines
 
-When reviewing PRs, check for these common issues:
+Run local code review with the same checks as the PR bot:
 
-### New Skills
-- [ ] `plugin.json` exists and has valid JSON with correct schema
-- [ ] `SKILL.md` has YAML frontmatter with `name`, `description`, `license`, `metadata`
-- [ ] `description` includes WHAT the skill does AND WHEN to use it (trigger words)
-- [ ] Folder name matches `name` field in SKILL.md frontmatter
-- [ ] Skill is added to `.claude-plugin/marketplace.json`
-- [ ] Skill is added to `README.md` skill table
-- [ ] SKILL.md is under 500 lines
-- [ ] Has Quick Start section with code examples
-- [ ] Has Anti-Patterns section
+```bash
+/review <skill-name>
+```
 
-### Skill Updates
-- [ ] Changes added to `## [Unreleased]` section in `CHANGELOG.md`
-- [ ] Correct changelog category used:
-  - `### Added` - New features (→ MINOR bump)
-  - `### Changed` - Behavior changes/breaking (→ MAJOR bump)
-  - `### Fixed` - Bug fixes (→ PATCH bump)
-  - `### Removed` - Deleted features/breaking (→ MAJOR bump)
-  - `### Deprecated` - Future removal warning (→ MINOR bump)
-  - `### Security` - Security fixes (→ PATCH bump)
-- [ ] Change descriptions are clear and user-facing (they appear in release notes)
-- [ ] **NOT** manually bumping version numbers (automated during release)
-- [ ] Description still accurate after changes
-- [ ] PR targets `develop` branch (not `main`)
+| Review Type | Skill | Purpose |
+|-------------|-------|---------|
+| `code` | `code-review` | Structure, content quality, marketplace |
+| `security` | `security-review` | Credentials, file safety, FTC IP whitelist |
+| `youth` | `youth-safety-review` | Content appropriateness for students |
 
-### Script Simplicity
-- [ ] If SKILL.md uses `uv run scripts/*.py`, check if script only needs Python stdlib
-- [ ] Scripts with only stdlib imports (sys, math, json, etc.) should use `python` not `uv run`
-- [ ] Reserve `uv run` for scripts that actually need external packages (numpy, requests, pandas, etc.)
-- [ ] Rationale: Simpler and more accessible - everyone has Python, not everyone has uv
+The review skills auto-activate when relevant. For full check definitions, see `.claude/skills/*/SKILL.md`.
 
-### Versioning & Changelog
-- [ ] PR does **NOT** include manual version bumps (automated during release)
-- [ ] Changes documented in `## [Unreleased]` section (not versioned sections)
-- [ ] Changelog categories match the actual changes:
-  - Breaking changes use `### Changed` or `### Removed`
-  - New features use `### Added`
-  - Bug fixes use `### Fixed`
-- [ ] No empty or generic changelog entries ("various improvements" is not helpful)
-- [ ] CHANGELOG.md format is valid (proper markdown headers)
+### Quick Reference
+
+**New Skills:**
+- Start at version 1.0.0 (correct, not a violation)
+- Must have plugin.json, CHANGELOG.md, SKILL.md
+- Add to marketplace.json and README.md skill table
+
+**Skill Updates:**
+- Add changes to `## [Unreleased]` in CHANGELOG.md
+- Use correct categories: Added/Changed/Fixed/Removed/Deprecated/Security
+- Do NOT manually bump versions (release process handles this)
+- Target `develop` branch (not `main`)
+
+**Script Simplicity:**
+- Use `python` for stdlib-only scripts
+- Use `uv run` only when external packages needed
 
 ### Documentation Sync
 - [ ] README.md skill table matches marketplace.json
-- [ ] README.md contributor commands match actual commands in `plugins/contributor/commands/`
-- [ ] README.md "AI-Assisted Contribution" section lists all contributor commands
+- [ ] README.md contributor commands match actual commands
 - [ ] Repository structure section is current
-- [ ] "Skills We'd Love to See" doesn't list implemented skills
-
-### Contributor Plugin Changes
-When the contributor plugin is modified:
-- [ ] New commands are documented in README.md "AI-Assisted Contribution" section
-- [ ] New commands are documented in skill-builder SKILL.md "Available Commands" table
-- [ ] Command descriptions in marketplace.json match actual functionality
-- [ ] CONTRIBUTING.md references new commands where appropriate
 
 ## Skill Categories
 
@@ -90,10 +70,22 @@ The robot-dev plugin provides development commands:
 
 ## Contributing
 
-Contributors should use commands from the contributor plugin to ensure consistency:
-- `/contributor:create-skill` - Create new plugin from template
-- `/contributor:validate-skill` - Validate plugin structure before PR
+Contributors use project-local commands (in `.claude/commands/`):
 
-**Version Management:** Version bumps are automated during the release process. Contributors only add changes to `## [Unreleased]` sections in `CHANGELOG.md`. See [RELEASES.md](RELEASES.md) for the release process (maintainers only).
+| Command | Purpose |
+|---------|---------|
+| `/create-skill <name>` | Create new plugin from template |
+| `/validate-skill <name>` | Validate plugin structure before PR |
+| `/update-skill <name>` | Generate changelog entries from git diff |
+| `/review <name>` | Run local code review checks |
 
-See [VERSIONING.md](VERSIONING.md) for changelog category guidelines and [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guide.
+## Versioning
+
+**Never manually bump versions.** The `versioning` skill will remind you of the correct process:
+
+1. Add changes to `## [Unreleased]` in CHANGELOG.md
+2. Use `/update-skill <name>` to generate entries from git diff
+3. Submit PR to `develop` branch
+4. Versions are bumped automatically by the release process
+
+See [RELEASES.md](RELEASES.md) for release process (maintainers only) and [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guide.

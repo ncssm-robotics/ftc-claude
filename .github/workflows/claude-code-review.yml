@@ -5,14 +5,21 @@ on:
   # This runs in the base repo's context (has secrets) but checks out PR code
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
+  # Allow manual trigger via @claude-review comment on PRs
+  issue_comment:
+    types: [created]
 
 jobs:
   claude-review:
+    # Only run on pull_request_target events OR issue_comments containing @claude-review
+    if: |
+      github.event_name == 'pull_request_target' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude-review'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write  # write needed to post review comments
-      issues: read
+      issues: write  # write needed to add reaction emoji to trigger comments
 
     steps:
       # Checkout the PR's code (not base branch) for review
@@ -30,21 +37,19 @@ jobs:
           # OIDC token exchange doesn't work reliably with pull_request_target
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Allow manual trigger via @claude-review comment
+          trigger_phrase: '@claude-review'
+          # Allow trusted external contributors to trigger reviews
+          allowed_non_write_users: 'Prorickey,njfdev,Veratay'
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: |
             /code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
 
-            Additional checks for this FTC skills marketplace repository:
-            - If files in plugins/ are added/modified, verify README.md skill table is updated
-            - If .claude-plugin/marketplace.json is modified, verify README.md matches
-            - For new skills: check SKILL.md has proper frontmatter (name, description with WHAT and WHEN triggers)
-            - Verify plugin.json name matches the folder name
-            - Check that new skills are added to marketplace.json
-            - If SKILL.md shows `uv run scripts/*.py`, check if the script only uses Python stdlib (sys, math, json, etc.)
-              - If script has NO external dependencies (no numpy, requests, pandas, etc.), suggest using `python scripts/*.py` instead
-              - Rationale: Simpler and more accessible - all systems have Python, not everyone has uv installed
-              - uv should only be recommended when scripts actually need external packages
+            Review this PR for compliance with CLAUDE.md guidelines. CLAUDE.md references review skills that contain the complete check definitions - read these skill files for detailed criteria:
+            - .claude/skills/code-review/SKILL.md (structure, content quality, marketplace)
+            - .claude/skills/security-review/SKILL.md (credentials, file safety, FTC IP whitelist)
+            - .claude/skills/youth-safety-review/SKILL.md (content appropriateness for students)
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
 

@@ -15,7 +15,7 @@ Thank you for your interest in contributing to the FTC Claude Skills Marketplace
 
 ## AI-Assisted Contribution (Recommended)
 
-The easiest way to contribute is to use the **contributor** plugin, which includes a skill-builder skill and commands that guide Claude through creating properly structured skills.
+The easiest way to contribute is to use the project-local contributor commands, which include a skill-builder skill that guides Claude through creating properly structured skills.
 
 ### Quick Start
 
@@ -23,24 +23,20 @@ The easiest way to contribute is to use the **contributor** plugin, which includ
 # 1. Fork and clone
 git clone https://github.com/YOUR-USERNAME/ftc-claude.git
 cd ftc-claude
+git checkout develop
 
-# 2. Register the marketplace
-/plugin marketplace add ncssm-robotics/ftc-claude
+# 2. Create a new skill (contributor tools are project-local, no install needed!)
+/create-skill roadrunner library
 
-# 3. Install contributor tools
-/plugin install contributor@ncssm-robotics/ftc-claude
+# 3. Claude guides you through filling in the content
 
-# 4. Restart Claude Code
+# 4. Generate changelog entries from your changes
+/update-skill roadrunner
 
-# 5. Create a new skill
-/contributor:create-skill roadrunner library
+# 5. Validate before submitting
+/validate-skill roadrunner
 
-# 6. Claude guides you through filling in the content
-
-# 7. Validate before submitting
-/contributor:validate-skill roadrunner
-
-# 8. Submit PR
+# 6. Submit PR to develop branch
 ```
 
 ### Natural Language Approach

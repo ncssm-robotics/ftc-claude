@@ -92,7 +92,7 @@ Guide the user through:
 
 After creating, suggest running:
 ```
-/contributor:validate-skill <skill-name>
+/validate-skill <skill-name>
 ```
 
 ## Checklist

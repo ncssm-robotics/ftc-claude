@@ -20,7 +20,7 @@ jobs:
         with:
           ref: develop
           fetch-depth: 0  # Need full history
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_PAT }}
 
       - name: Configure Git
         run: |
