@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "FTC robotics programming skills marketplace - install only what your team needs",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "homepage": "https://github.com/ncssm-robotics/ftc-claude",
     "license": "MIT"
   },
@@ -66,15 +66,6 @@
       ]
     },
     {
-      "name": "contributor",
-      "version": "2.0.0",
-      "description": "Contributor tools - /create-skill and /validate-skill commands for managing FTC plugins",
-      "source": "./plugins/contributor",
-      "skills": [
-        "./skills/skill-builder"
-      ]
-    },
-    {
       "name": "roadrunner",
       "version": "1.0.0",
       "description": "RoadRunner path planning library - trajectories, motion profiles, localization, autonomous routines",
@@ -99,6 +90,15 @@
       "source": "./plugins/ftc-dashboard",
       "skills": [
         "./skills/ftc-dashboard"
+      ]
+    },
+    {
+      "name": "ftclib",
+      "version": "1.1.0",
+      "description": "FTCLib library - command-based framework, pure pursuit, vision pipelines, gamepad extensions",
+      "source": "./plugins/ftclib",
+      "skills": [
+        "./skills/ftclib"
       ]
     }
   ]
