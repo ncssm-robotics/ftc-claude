@@ -104,6 +104,49 @@ uv run scripts/convert.py tx-to-turret -5.5 12.0  # custom ticks/degree
 uv run scripts/convert.py distance 15 12 20 36
 ```
 
+## Anti-Patterns
+
+### Don't: Forget to call start()
+
+```kotlin
+// BAD - Results will never be valid
+val limelight = hardwareMap.get(Limelight3A::class.java, "limelight")
+val result = limelight.latestResult  // Always invalid!
+
+// GOOD - Start before reading
+limelight.pipelineSwitch(0)
+limelight.start()
+val result = limelight.latestResult
+```
+
+### Don't: Skip validity checks
+
+```kotlin
+// BAD - May use stale or invalid data
+val tx = limelight.latestResult.tx
+turret.aimAt(tx)
+
+// GOOD - Always check validity
+val result = limelight.latestResult
+if (result.isValid) {
+    turret.aimAt(result.tx)
+}
+```
+
+### Don't: Leave camera running after OpMode
+
+```kotlin
+// BAD - Camera keeps running, wastes battery
+override fun stop() {
+    // Forgot to stop limelight
+}
+
+// GOOD - Clean up in stop()
+override fun stop() {
+    limelight.stop()
+}
+```
+
 ## Reference Documentation
 
 - [API_REFERENCE.md](API_REFERENCE.md) - Full class/method reference
