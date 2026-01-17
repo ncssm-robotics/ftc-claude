@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- PATTERNS.md with PID tuning and robot position tracking examples
+
+### Fixed
+- Added missing compatibility field to SKILL.md frontmatter
+
 ## [1.0.0] - 2025-01-15
 
 ### Added
