@@ -117,16 +117,17 @@ See [HUD.md](HUD.md) for configuration options.
 /connect  # Now it works
 ```
 
-### Don't: Deploy without building first
+### Don't: Ignore build errors and deploy anyway
 
 ```
-# BAD - Deploys stale code
-# (Made code changes but didn't build)
-/deploy   # Old code still running!
+# BAD - Deploy after build fails
+/build    # Shows errors, you ignore them
+/deploy   # Deploys old working code, not your changes!
 
-# GOOD - Build explicitly or use /deploy (which builds automatically)
-/build    # Compile changes
-/deploy   # Deploy fresh build
+# GOOD - Fix errors before deploying
+/build    # Fix any errors shown
+/build    # Verify clean build
+/deploy   # Now your changes are deployed
 ```
 
 ### Don't: Forget to connect before deploying
