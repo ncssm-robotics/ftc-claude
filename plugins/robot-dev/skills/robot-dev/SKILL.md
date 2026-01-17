@@ -103,3 +103,51 @@ When connected, the status line shows:
 ```
 
 See [HUD.md](HUD.md) for configuration options.
+
+## Anti-Patterns
+
+### Don't: Skip /doctor on a new machine
+
+```
+# BAD - Jump straight to connecting
+/connect  # "ADB not found" error
+
+# GOOD - Check environment first
+/doctor   # Identifies missing dependencies
+/connect  # Now it works
+```
+
+### Don't: Ignore build errors and deploy anyway
+
+```
+# BAD - Deploy after build fails
+/build    # Shows errors, you ignore them
+/deploy   # Deploys old working code, not your changes!
+
+# GOOD - Fix errors before deploying
+/build    # Fix any errors shown
+/build    # Verify clean build
+/deploy   # Now your changes are deployed
+```
+
+### Don't: Forget to connect before deploying
+
+```
+# BAD - Deploy fails silently
+/deploy   # "No device connected" error
+
+# GOOD - Ensure connection first
+/connect  # Establish connection
+/deploy   # Deploy succeeds
+```
+
+### Don't: Debug without filtering logs
+
+```
+# BAD - Overwhelmed by system noise
+/log      # Thousands of unrelated messages
+
+# GOOD - Filter to what matters
+/log --errors     # Only error messages
+/log --tag=MyOp   # Only your OpMode's logs
+```

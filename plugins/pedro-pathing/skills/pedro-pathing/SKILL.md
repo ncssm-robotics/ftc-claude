@@ -121,6 +121,66 @@ Check when path is complete:
 - `pathTimer.getElapsedTimeSeconds() > 1.5` - Time elapsed
 - `follower.getPose().getX() > 36` - Position threshold
 
+## Anti-Patterns
+
+### Don't: Forget to call update()
+
+```java
+// BAD - Robot won't follow paths
+@Override
+public void loop() {
+    autonomousPathUpdate();  // Missing follower.update()!
+}
+
+// GOOD - Always call update() first
+@Override
+public void loop() {
+    follower.update();  // MUST be called every loop
+    autonomousPathUpdate();
+}
+```
+
+### Don't: Forget to set starting pose
+
+```java
+// BAD - Robot thinks it's at (0, 0, 0)
+@Override
+public void init() {
+    follower = Constants.createFollower(hardwareMap);
+    buildPaths();  // Paths may be wrong!
+}
+
+// GOOD - Set actual starting position
+@Override
+public void init() {
+    follower = Constants.createFollower(hardwareMap);
+    follower.setStartingPose(startPose);
+    buildPaths();
+}
+```
+
+### Don't: Use holdEnd when you don't need it
+
+```java
+// BAD - Robot fights to hold position between paths
+follower.followPath(path1, true);  // Holds endpoint
+follower.followPath(path2, true);  // Unnecessary hold
+
+// GOOD - Only hold on final path or when needed
+follower.followPath(path1);        // No hold between paths
+follower.followPath(path2, true);  // Hold at end
+```
+
+### Don't: Use degrees for heading
+
+```java
+// BAD - Heading in degrees causes wrong rotation
+Pose target = new Pose(24, 48, 90);  // 90 degrees? No!
+
+// GOOD - Always use radians
+Pose target = new Pose(24, 48, Math.toRadians(90));
+```
+
 ## Reference Documentation
 
 - [HEADING_INTERPOLATION.md](HEADING_INTERPOLATION.md) - All heading options

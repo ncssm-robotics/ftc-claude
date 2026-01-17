@@ -13,7 +13,7 @@ metadata:
 
 Panels (by Lazar/ByteForce) is a web-based dashboard for FTC robots providing telemetry, graphs, and live configuration.
 
-## Setup
+## Quick Start
 
 Add dependency in `TeamCode/build.gradle`:
 ```gradle

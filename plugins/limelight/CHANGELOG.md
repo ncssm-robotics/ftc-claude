@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Anti-Patterns section covering start() calls, validity checks, and cleanup
+
 ## [1.0.0] - 2025-01-15
 
 ### Added
